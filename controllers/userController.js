@@ -62,7 +62,7 @@ export const registerUser = async (req, res) => {
         // );
 
         res.status(200).json({
-            message: "Verification email sent. Please check your email."
+            message: "Verification email sent. Please check your email. currently disabled"
         });
 
 
