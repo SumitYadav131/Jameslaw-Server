@@ -48,7 +48,6 @@ export const registerUser = async (req, res) => {
 
         // const verifyLink = `http://localhost:3000/verify-email?token=${verifyToken}`;
 
-
         // Will add nodemailer 
         console.log("Verify Link:", verifyLink);
 
