@@ -18,6 +18,9 @@ export const sendEmail = async (to, subject, html) => {
             user: process.env.EMAIL_USER,
             pass: process.env.EMAIL_PASS
         },
+        tls: {
+            rejectUnauthorized: false
+        },
         connectionTimeout: 10000, // 10 sec
     });
 
