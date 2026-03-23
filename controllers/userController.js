@@ -7,7 +7,7 @@ import { sendEmail } from "../utils/sendEmail.js";
 
 // Register User
 export const registerUser = async (req, res) => {
-    const baseurl = "https://jameslaw-server.onrender.com/";
+    const baseurl = "https://jameslaw-server.onrender.com";
     const { name, email, password, phone, country, city, pincode, state, dob, streetaddress } = req.body;
 
     if (!name || !email || !password || !country || !state || !pincode || !phone || !streetaddress) {
