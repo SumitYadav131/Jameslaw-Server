@@ -130,7 +130,9 @@ export const loginUser = async (req, res) => {
                 name: user.name,
                 email: user.email
             }
-        })
+        });
+
+        res.redirect('http://localhost:5173/');
     } catch (error) {
         console.log(error);
         res.status(500).json({
