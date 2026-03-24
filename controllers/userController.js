@@ -98,6 +98,7 @@ export const checkUser = async (req, res) => {
 
 // Login User
 export const loginUser = async (req, res) => {
+    console.log("running login route");
     const { email, password } = req.body;
 
     if (!email || !password) {
