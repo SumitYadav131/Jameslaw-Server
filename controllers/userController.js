@@ -53,15 +53,15 @@ export const registerUser = async (req, res) => {
 
         // Email logic here
 
-        // await sendEmail(
-        //     email,
-        //     "Verify Your Account",
-        //     `<h2>Click below to verify</h2>
-        //  <a href="${verifyLink}">Verify Email</a>`
-        // );
+        await sendEmail(
+            email,
+            "Verify Your Account",
+            `<h2>Click below to verify</h2>
+         <a href="${verifyLink}">Verify Email</a>`
+        );
 
         res.status(200).json({
-            message: "Verification email sent. Please check your email. currently disabled"
+            message: "Verification email sent. Please check your email."
         });
 
 
