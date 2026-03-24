@@ -7,7 +7,12 @@ import { sendEmail } from "../utils/sendEmail.js";
 
 // Register User
 export const registerUser = async (req, res) => {
-    const baseurl = "https://jameslaw-server.onrender.com";
+
+    // const baseurl = "https://jameslaw-server.onrender.com";
+
+    const baseurl = process.BASE_URL;
+
+
     const { name, email, password, phone, country, city, pincode, state, dob, streetaddress } = req.body;
 
     if (!name || !email || !password || !country || !state || !pincode || !phone || !streetaddress) {
@@ -124,7 +129,13 @@ export const loginUser = async (req, res) => {
             user: {
                 id: user._id,
                 name: user.name,
-                email: user.email
+                email: user.email,
+                phone: user.phone,
+                country: user.country,
+                city: user.city,
+                pincode: user.pincode,
+                streetaddress: user.streetaddress,
+                dob: user.dob
             }
         });
     } catch (error) {
