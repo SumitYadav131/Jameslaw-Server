@@ -45,7 +45,6 @@ export const registerUser = async (req, res) => {
 
         const verifyLink = `${baseurl}/verify-email?token=${verifyToken}`;
 
-
         // const verifyLink = `http://localhost:3000/verify-email?token=${verifyToken}`;
 
         // Will add nodemailer 
@@ -63,8 +62,6 @@ export const registerUser = async (req, res) => {
         res.status(200).json({
             message: "Verification email sent. Please check your email."
         });
-
-
 
     } catch (error) {
         console.log(error);
