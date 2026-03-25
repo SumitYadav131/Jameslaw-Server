@@ -192,7 +192,24 @@ export const verifyEmail = async (req, res) => {
 
 // Update Profile
 export const updateProfile = async (req, res) => {
-    const { user, email, phone, state, city, pincode, streetaddress, country, dob } = req.body;
+    const { userid, email, phone, state, city, pincode, streetaddress, country, dob } = req.body;
 
+    try {
+        const updatedUser = await User.findByIdAndUpdate(userid, {
+            email, phone, pincode, city, state, country, streetaddress, dob
+        }, { new: true });
+
+        if (!updatedUser) {
+            return res.status(404).json({ message: "user not found" });
+        }
+
+        res.json({
+            message: "Profile Updated successfully",
+            user: updatedUser
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Server Error" });
+    }
 
 }
