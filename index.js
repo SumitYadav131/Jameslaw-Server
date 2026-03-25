@@ -22,7 +22,7 @@ app.get('/verify-email', verifyEmail);
 
 app.post('/login', loginUser);
 
-app.put('/update-profile',)
+app.put('/update-profile', updateProfile)
 
 const PORT = 3000;
 
