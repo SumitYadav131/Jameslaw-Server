@@ -1,8 +1,7 @@
 import express from "express";
 import connectDB from "./db.js";
-import { registerUser, checkUser, loginUser, verifyEmail } from "./controllers/userController.js"
+import { registerUser, checkUser, loginUser, verifyEmail, updateProfile } from "./controllers/userController.js"
 import cors from "cors";
-
 const app = express();
 
 connectDB();
@@ -19,9 +18,11 @@ app.post('/check', checkUser);
 
 app.post('/register', registerUser);
 
-app.get('/verify-email', verifyEmail)
+app.get('/verify-email', verifyEmail);
 
-app.post('/login', loginUser)
+app.post('/login', loginUser);
+
+app.put('/update-profile',)
 
 const PORT = 3000;
 

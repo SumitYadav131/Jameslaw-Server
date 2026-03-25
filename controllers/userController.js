@@ -188,3 +188,11 @@ export const verifyEmail = async (req, res) => {
         res.status(500).send("Server Error");
     }
 }
+
+
+// Update Profile
+export const updateProfile = async (req, res) => {
+    const { user, email, phone, state, city, pincode, streetaddress, country, dob } = req.body;
+
+    
+}
