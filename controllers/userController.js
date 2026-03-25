@@ -131,6 +131,7 @@ export const loginUser = async (req, res) => {
                 id: user._id,
                 name: user.name,
                 email: user.email,
+                state: user.state,
                 phone: user.phone,
                 country: user.country,
                 city: user.city,
