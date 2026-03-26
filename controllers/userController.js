@@ -192,11 +192,11 @@ export const verifyEmail = async (req, res) => {
 
 // Update Profile
 export const updateProfile = async (req, res) => {
-    const { userid, email, phone, state, city, pincode, streetaddress, country, dob } = req.body;
+    const { userid, email, phone, state, city, pincode, streetaddress, country, dob, name } = req.body;
 
     try {
         const updatedUser = await User.findByIdAndUpdate(userid, {
-            email, phone, pincode, city, state, country, streetaddress, dob
+            email, phone, pincode, city, state, country, streetaddress, dob, name
         }, { new: true });
 
         if (!updatedUser) {
