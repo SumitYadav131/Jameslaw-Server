@@ -242,7 +242,7 @@ export const updateProfilepass = async (req, res) => {
         return res.json({ message: "Password Changed Successfully" });
     } catch (error) {
         res.status(500).json({
-            message: "server error"
+            message: "server error" . error
         });
     }
 
