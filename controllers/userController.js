@@ -214,3 +214,39 @@ export const updateProfile = async (req, res) => {
     }
 
 }
+
+// Update Profile Pass
+export const updateProfilepass = async (req, res) => {
+    const { userid, oldpassword, newpassword } = req.body;
+
+    try {
+        const user = await User.findById(userid);
+        if (!user) {
+            return res.status(404).json({
+                message: "User Not Found"
+            })
+        }
+        const isMatch = await bcrypt.compare(oldpassword, user.password);
+        if (!isMatch) {
+            return res.status(400).json({
+                message: "Incorrect Old Password"
+            })
+        }
+
+        const hashpassword = await bcrypt.hash(newpassword);
+
+        user.password = hashpassword;
+
+        await user.save();
+
+        return res.json({ message: "Password Changed Successfully" });
+    } catch (error) {
+        res.status(500).json({
+            message: "server error"
+        });
+    }
+
+
+
+
+}
