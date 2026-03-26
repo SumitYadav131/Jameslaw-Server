@@ -217,7 +217,7 @@ export const updateProfile = async (req, res) => {
 
 // Update Profile Pass
 export const updateProfilepass = async (req, res) => {
-    const { userid, oldpassword, newpassword } = req.body;
+    const { userid, oldPassword, newPassword } = req.body;
 
     try {
         const user = await User.findById(userid);
@@ -226,14 +226,14 @@ export const updateProfilepass = async (req, res) => {
                 message: "User Not Found"
             })
         }
-        const isMatch = await bcrypt.compare(oldpassword, user.password);
+        const isMatch = await bcrypt.compare(oldPassword, user.password);
         if (!isMatch) {
             return res.status(400).json({
                 message: "Incorrect Old Password"
             })
         }
 
-        const hashpassword = await bcrypt.hash(newpassword);
+        const hashpassword = await bcrypt.hash(newPassword);
 
         user.password = hashpassword;
 
