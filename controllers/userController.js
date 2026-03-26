@@ -128,7 +128,8 @@ export const loginUser = async (req, res) => {
             message: "Login Successful",
             token,
             user: {
-                id: user._id,
+                // changed id name
+                _id: user._id,
                 name: user.name,
                 email: user.email,
                 state: user.state,
