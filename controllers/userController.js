@@ -233,7 +233,7 @@ export const updateProfilepass = async (req, res) => {
             })
         }
 
-        const hashpassword = await bcrypt.hash(newPassword);
+        const hashpassword = await bcrypt.hash(newPassword, 10);
 
         user.password = hashpassword;
 
