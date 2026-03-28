@@ -264,7 +264,8 @@ export const registerSubscription = async (req, res) => {
         paymentId
     } = req.body;
 
-    const userId = req.user.id;
+    const userId = req.user.userId;
+
 
     if (!userId || !planName || !planType || !price) {
         return res.status(400).json({
