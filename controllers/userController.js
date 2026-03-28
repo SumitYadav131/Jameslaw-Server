@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import PendingUser from "../models/PendingUser.js";
 import crypto from "crypto";
 import { sendEmail } from "../utils/sendEmail.js";
+import Subscription from "../models/Subscription.js";
 
 // Register User
 export const registerUser = async (req, res) => {
@@ -251,3 +252,48 @@ export const updateProfilepass = async (req, res) => {
 
 
 }
+
+
+export const registerSubscription = async (req, res) => {
+    const {
+        userId,
+        planName,
+        planType,
+        price,
+        status,
+        startDate,
+        endDate,
+        paymentId
+    } = req.body;
+
+    if (!userId || !planName || !planType || !price) {
+        return res.status(400).json({
+            message: "Required fields missing"
+        });
+    }
+
+    try {
+        const newSub = await Subscription.create({
+            userId,
+            planName,
+            planType,
+            price,
+            status: status || "active",
+            startDate: startDate || new Date(),
+            endDate,
+            paymentId
+        });
+
+        res.status(201).json({
+            message: "Subscribed to plan " + planName,
+            data: newSub
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: "Server Error",
+            error: error.message
+        });
+    }
+};

@@ -24,7 +24,9 @@ app.post('/login', loginUser);
 
 app.put('/update-profile', updateProfile);
 
-app.put('/updateprofilepass', updateProfilepass)
+app.put('/updateprofilepass', updateProfilepass);
+
+
 
 const PORT = 3000;
 
