@@ -1,5 +1,4 @@
-import Subscription from "../models/Subscription";
-
+import Subscription from "../models/Subscription.js";
 
 // Register Subscription
 export const registerSubscription = async (req, res) => {
@@ -47,3 +46,26 @@ export const registerSubscription = async (req, res) => {
         });
     }
 };
+
+//  Get Active Subsciption
+export const getActiveSubscription = async (req, res) => {
+    const userId = req.user.userId;
+    console.log(userId);
+    try {
+        const subs = await Subscription.findOne({
+            userId,
+            status: "active"
+        });
+        if (!subs) {
+            return res.status(404).json({
+                message: "No Active Subscription"
+            });
+        }
+        return res.status(200).json({
+            message: "Active Subscription",
+            data: subs
+        });
+    } catch (error) {
+        console.log(error);
+    }
+}
