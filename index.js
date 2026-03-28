@@ -1,6 +1,6 @@
 import express from "express";
 import connectDB from "./db.js";
-import { registerUser, checkUser, loginUser, verifyEmail, updateProfile, updateProfilepass } from "./controllers/userController.js"
+import { registerUser, checkUser, loginUser, verifyEmail, updateProfile, updateProfilepass , registerSubscription } from "./controllers/userController.js"
 import cors from "cors";
 const app = express();
 
@@ -25,6 +25,8 @@ app.post('/login', loginUser);
 app.put('/update-profile', updateProfile);
 
 app.put('/updateprofilepass', updateProfilepass);
+
+app.post('/subscribeplan' , registerSubscription);
 
 
 
