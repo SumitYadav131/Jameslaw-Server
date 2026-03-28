@@ -63,7 +63,7 @@ export const getActiveSubscription = async (req, res) => {
         }
         return res.status(200).json({
             message: "Active Subscription",
-            data: subs
+           subs
         });
     } catch (error) {
         console.log(error);
