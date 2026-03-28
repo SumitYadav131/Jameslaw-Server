@@ -252,7 +252,7 @@ export const updateProfilepass = async (req, res) => {
 
 }
 
-
+// Register Subscription
 export const registerSubscription = async (req, res) => {
     const {
         planName,
