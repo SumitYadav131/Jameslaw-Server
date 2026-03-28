@@ -1,8 +1,10 @@
 import express from "express";
 import connectDB from "./db.js";
-import { registerUser, checkUser, loginUser, verifyEmail, updateProfile, updateProfilepass, registerSubscription } from "./controllers/userController.js"
+import { registerUser, checkUser, loginUser, verifyEmail, updateProfile, updateProfilepass } from "./controllers/userController.js"
 import cors from "cors";
 import { authMiddleware } from "./controllers/middleware/middleware.js";
+import { registerSubscription } from "./controllers/subscriptionController.js"
+
 
 const app = express();
 
