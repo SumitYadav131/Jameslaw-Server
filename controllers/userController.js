@@ -191,7 +191,6 @@ export const verifyEmail = async (req, res) => {
     }
 }
 
-
 // Update Profile
 export const updateProfile = async (req, res) => {
     const { userid, email, phone, state, city, pincode, streetaddress, country, dob, name } = req.body;
