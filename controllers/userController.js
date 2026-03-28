@@ -256,7 +256,6 @@ export const updateProfilepass = async (req, res) => {
 
 export const registerSubscription = async (req, res) => {
     const {
-        userId,
         planName,
         planType,
         price,
@@ -265,6 +264,8 @@ export const registerSubscription = async (req, res) => {
         endDate,
         paymentId
     } = req.body;
+
+    const userId = req.user.id;
 
     if (!userId || !planName || !planType || !price) {
         return res.status(400).json({
