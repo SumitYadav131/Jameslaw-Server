@@ -3,7 +3,7 @@ import connectDB from "./db.js";
 import { registerUser, checkUser, loginUser, verifyEmail, updateProfile, updateProfilepass, getProfileDetails } from "./controllers/userController.js"
 import cors from "cors";
 import { authMiddleware } from "./controllers/middleware/middleware.js";
-import { registerSubscription, getActiveSubscription } from "./controllers/subscriptionController.js"
+import { registerSubscription, getActiveSubscription, cancelSubscription } from "./controllers/subscriptionController.js"
 
 
 const app = express();
@@ -36,7 +36,7 @@ app.get('/getactivemembership', authMiddleware, getActiveSubscription);
 
 app.get('/myprofiledetails', authMiddleware, getProfileDetails);
 
-app.put('/cancelplan', authMiddleware, );
+app.put('/cancelplan', authMiddleware, cancelSubscription);
 
 const PORT = 3000;
 

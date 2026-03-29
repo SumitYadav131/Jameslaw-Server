@@ -74,7 +74,6 @@ export const getActiveSubscription = async (req, res) => {
 
 // cancel subscription
 export const cancelSubscription = async (req, res) => {
-    const baseurl = process.env.BASE_URL || "http://localhost:3000";
     const userId = req.user.id;
     const token = req.headers.authorization?.split(" ")[1];
     if (!token) {
@@ -85,12 +84,13 @@ export const cancelSubscription = async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
-
-        const activesubs = await axios.get(`${baseurl}/getactivemembership`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
+        const activeSub = await Subscription.findOne({ userId, status: "active" });
+        if (!activeSub) {
+            return res.status(404).json({ message: "No active subscription found" });
+        }
+        // status change 
+        activeSub.status = "inactive";
+        await activeSub.save();
 
         res.status(200).json({ message: "Subscription cancelled successfully" });
     } catch (error) {
