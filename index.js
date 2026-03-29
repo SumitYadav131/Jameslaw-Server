@@ -1,6 +1,6 @@
 import express from "express";
 import connectDB from "./db.js";
-import { registerUser, checkUser, loginUser, verifyEmail, updateProfile, updateProfilepass } from "./controllers/userController.js"
+import { registerUser, checkUser, loginUser, verifyEmail, updateProfile, updateProfilepass, getProfileDetails } from "./controllers/userController.js"
 import cors from "cors";
 import { authMiddleware } from "./controllers/middleware/middleware.js";
 import { registerSubscription, getActiveSubscription } from "./controllers/subscriptionController.js"
@@ -34,7 +34,7 @@ app.post('/subscribeplan', authMiddleware, registerSubscription);
 
 app.get('/getactivemembership', authMiddleware, getActiveSubscription);
 
-app.get('/myprofiledetails', authMiddleware ,  );
+app.get('/myprofiledetails', authMiddleware, getProfileDetails);
 
 
 
