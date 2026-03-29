@@ -36,7 +36,7 @@ app.get('/getactivemembership', authMiddleware, getActiveSubscription);
 
 app.get('/myprofiledetails', authMiddleware, getProfileDetails);
 
-
+app.put('/cancelplan', authMiddleware, );
 
 const PORT = 3000;
 
