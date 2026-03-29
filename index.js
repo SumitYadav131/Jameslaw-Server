@@ -24,7 +24,7 @@ app.post('/register', registerUser);
 
 app.get('/verify-email', verifyEmail);
 
-app.post('/login', authMiddleware, loginUser);
+app.post('/login', loginUser);
 
 app.put('/update-profile', updateProfile);
 
