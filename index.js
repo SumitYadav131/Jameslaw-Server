@@ -34,6 +34,8 @@ app.post('/subscribeplan', authMiddleware, registerSubscription);
 
 app.get('/getactivemembership', authMiddleware, getActiveSubscription);
 
+app.get('/myprofiledetails', authMiddleware ,  );
+
 
 
 const PORT = 3000;
