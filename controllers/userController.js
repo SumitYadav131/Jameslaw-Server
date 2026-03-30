@@ -10,7 +10,7 @@ export const registerUser = async (req, res) => {
 
     // const baseurl = "https://jameslaw-server.onrender.com";
 
-    const baseurl = process.BASE_URL;
+    const baseurl = process.env.BASE_URL;
 
     console.log(baseurl);
 
