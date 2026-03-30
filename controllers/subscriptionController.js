@@ -76,6 +76,7 @@ export const getActiveSubscription = async (req, res) => {
 export const cancelSubscription = async (req, res) => {
     const userId = req.user.userId;
     const token = req.headers.authorization?.split(" ")[1];
+    const subsId = req.body.subsId;
     if (!token) {
         return res.status(401).json({ message: "Unauthorized" });
     }
@@ -84,7 +85,7 @@ export const cancelSubscription = async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
-        const activeSub = await Subscription.findOne({ userId, status: "active" });
+        const activeSub = await Subscription.findOne({ userId, status: "active", _id: subsId });
         if (!activeSub) {
             return res.status(404).json({ message: "No active subscription found" });
         }
