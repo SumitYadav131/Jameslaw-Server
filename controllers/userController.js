@@ -12,7 +12,7 @@ export const registerUser = async (req, res) => {
 
     const baseurl = process.BASE_URL;
 
-    alert(baseurl);
+    console.log(baseurl);
 
 
     const { name, email, password, phone, country, city, pincode, state, dob, streetaddress } = req.body;
