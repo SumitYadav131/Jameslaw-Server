@@ -3,7 +3,7 @@ import connectDB from "./db.js";
 import { registerUser, checkUser, loginUser, verifyEmail, updateProfile, updateProfilepass, getProfileDetails } from "./controllers/userController.js"
 import cors from "cors";
 import { authMiddleware } from "./controllers/middleware/middleware.js";
-import { registerSubscription, getActiveSubscription, cancelSubscription } from "./controllers/subscriptionController.js"
+import { registerSubscription, getSubscription, cancelSubscription } from "./controllers/subscriptionController.js"
 
 
 const app = express();
@@ -32,7 +32,7 @@ app.put('/updateprofilepass', updateProfilepass);
 
 app.post('/subscribeplan', authMiddleware, registerSubscription);
 
-app.get('/getactivemembership', authMiddleware, getActiveSubscription);
+app.get('/getallmembership', authMiddleware, getSubscription);
 
 app.get('/myprofiledetails', authMiddleware, getProfileDetails);
 

@@ -49,26 +49,29 @@ export const registerSubscription = async (req, res) => {
     }
 };
 
-//  Get Active Subsciption
-export const getActiveSubscription = async (req, res) => {
+//  Get Subsciption
+export const getSubscription = async (req, res) => {
     const userId = req.user.userId;
     console.log(userId);
     try {
-        const subs = await Subscription.findOne({
-            userId,
-            status: "active"
+        const subs = await Subscription.find({
+            userId
         });
         if (!subs) {
             return res.status(404).json({
-                message: "No Active Subscription"
+                message: "No Subscription found"
             });
         }
         return res.status(200).json({
-            message: "Active Subscription",
+            message: "All Subscriptions",
             subs
         });
     } catch (error) {
         console.log(error);
+        res.status(500).json({
+            message: "Error fetching subscription",
+            error: error.message
+        });
     }
 }
 
