@@ -5,6 +5,40 @@ import Payment from "../models/Payment.js";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
+// Craete Payment Intent
+export const createPaymentIntent = async (req, res) => {
+    const { planType, plan } = req.body;
+    const userId = req.user.userId;
+
+    const priceMap = {
+        basic: 78000,   // ₹780
+        premium: 99900,
+        pro: 190000,
+    };
+
+    try {
+        const paymentIntent = await stripe.paymentIntents.create({
+            amount: priceMap[plan],  
+            currency: "inr",
+            metadata: {
+                userId,
+                plan,
+                planType,
+            },
+        });
+
+        res.json({
+            clientSecret: paymentIntent.client_secret,
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(`Stripe Error: ${error.message}`);
+    }
+};
+
+
+
 // create checkout session
 export const createCheckoutSession = async (req, res) => {
     const { planType, plan } = req.body;
@@ -46,6 +80,10 @@ export const createCheckoutSession = async (req, res) => {
     }
 
 }
+
+
+
+
 
 // webhook to handle stripe events
 // export const stripeWebhook = async (req, res) => {
