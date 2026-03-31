@@ -4,7 +4,7 @@ import { registerUser, checkUser, loginUser, verifyEmail, updateProfile, updateP
 import cors from "cors";
 import { authMiddleware } from "./controllers/middleware/middleware.js";
 import { registerSubscription, getSubscription, cancelSubscription } from "./controllers/subscriptionController.js"
-import { createCheckoutSession, stripeWebhook } from "./controllers/paymentController.js";
+import { createCheckoutSession } from "./controllers/paymentController.js";
 
 const app = express();
 

@@ -42,12 +42,12 @@ export const createCheckoutSession = async (req, res) => {
         res.json({ url: session.url });
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: "Stripe Error" }).send();
+        res.status(500).send(`Stripe Error: ${error.message}`);
     }
 
 }
 
-// webhook to handle stripe events 
+// webhook to handle stripe events
 // export const stripeWebhook = async (req, res) => {
 //     const sig = req.headersp["stripe-signature"];
 //     let event;
@@ -72,7 +72,7 @@ export const createCheckoutSession = async (req, res) => {
 //         const paymentId = session.payment_intent;
 
 //         try {
-//             // Save Payment 
+//             // Save Payment
 //             await Payment.create({
 //                 userId,
 //                 transactionId: session.id,
@@ -82,7 +82,7 @@ export const createCheckoutSession = async (req, res) => {
 //                 paymentDate: new Date(session.created * 1000),
 //             });
 
-//             // save subscription 
+//             // save subscription
 //             await Subscription.create({
 //                 userId,
 //                 planName: plan,
