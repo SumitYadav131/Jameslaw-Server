@@ -13,7 +13,7 @@ const subscriptionSchema = new mongoose.Schema(
         startDate: Date,
         endDate: Date,
         paymentId: String,
-    }
+    }, { timestamps: true }
 );
 
 export default mongoose.model("Subscription", subscriptionSchema);
