@@ -4,7 +4,7 @@ import { registerUser, checkUser, loginUser, verifyEmail, updateProfile, updateP
 import cors from "cors";
 import { authMiddleware } from "./controllers/middleware/middleware.js";
 import { registerSubscription, getSubscription, cancelSubscription } from "./controllers/subscriptionController.js"
-
+import { createCheckoutSession, stripeWebhook } from "./controllers/paymentController.js";
 
 const app = express();
 
@@ -37,6 +37,10 @@ app.get('/getallmembership', authMiddleware, getSubscription);
 app.get('/myprofiledetails', authMiddleware, getProfileDetails);
 
 app.put('/cancelplan', authMiddleware, cancelSubscription);
+
+app.post('/create-checkout-session', authMiddleware, createCheckoutSession);
+
+// app.post('/stripe-webhook', express.raw({ type: "application/json" }), stripeWebhook);
 
 const PORT = 3000;
 
