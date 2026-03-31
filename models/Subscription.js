@@ -4,7 +4,10 @@ const subscriptionSchema = new mongoose.Schema(
     {
         userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
         planName: String,
-        planType: String,
+        planType: {
+            type: String,
+            enum: ["monthly", "yearly"],
+        },
         price: Number,
         status: String,
         startDate: Date,
