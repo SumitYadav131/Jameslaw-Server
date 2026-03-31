@@ -21,7 +21,7 @@ export const createCheckoutSession = async (req, res) => {
             line_items: [
                 {
                     price_data: {
-                        currency: "usd",
+                        currency: "inr",
                         product_data: {
                             name: plan,
                         },
@@ -31,7 +31,7 @@ export const createCheckoutSession = async (req, res) => {
                 }
             ],
             success_url: `${process.env.CLIENT_url}/success`,
-            cancel_url: `${process.env.CLIENT_url}/cancel`,
+            cancel_url: `${process.env.CLIENT_url}`,
 
             metadata: {
                 userId,
