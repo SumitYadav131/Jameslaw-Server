@@ -29,7 +29,7 @@ export const createPaymentIntent = async (req, res) => {
 
         res.json({
             clientSecret: paymentIntent.client_secret,
-            
+
         });
 
     } catch (error) {
