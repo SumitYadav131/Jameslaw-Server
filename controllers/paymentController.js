@@ -18,7 +18,7 @@ export const createPaymentIntent = async (req, res) => {
 
     try {
         const paymentIntent = await stripe.paymentIntents.create({
-            amount: priceMap[plan],  
+            amount: priceMap[plan],
             currency: "inr",
             metadata: {
                 userId,
@@ -80,9 +80,6 @@ export const createCheckoutSession = async (req, res) => {
     }
 
 }
-
-
-
 
 
 // webhook to handle stripe events
