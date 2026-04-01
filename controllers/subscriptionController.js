@@ -92,14 +92,19 @@ export const cancelSubscription = async (req, res) => {
         if (!activeSub) {
             return res.status(404).json({ message: "No active subscription found" });
         }
+
+        // Delete subscription
+        await Subscription.findByIdAndDelete(subsId);
+
+
         // status change 
-        activeSub.status = "inactive";
-        await activeSub.save();
+        // activeSub.status = "inactive";
+        // await activeSub.save();
 
         res.status(200).json({ message: "Subscription cancelled successfully" });
     } catch (error) {
         console.error("Error cancelling subscription:", error);
-        
+
         res.status(500).json({ message: "Error cancelling subscription: " + error.message });
     }
 }
