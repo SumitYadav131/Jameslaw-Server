@@ -99,6 +99,7 @@ export const cancelSubscription = async (req, res) => {
         res.status(200).json({ message: "Subscription cancelled successfully" });
     } catch (error) {
         console.error("Error cancelling subscription:", error);
-        res.status(500).json({ message: "Internal server error" });
+        
+        res.status(500).json({ message: "Error cancelling subscription: " + error.message });
     }
 }
