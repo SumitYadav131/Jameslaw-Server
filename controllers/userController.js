@@ -123,7 +123,7 @@ export const loginUser = async (req, res) => {
         }
 
         const token = jwt.sign(
-            { userId: user.id }, process.env.JWT_SECRET, { expiresIn: "1D" }
+            { userId: user.id, role: user.role || "user" }, process.env.JWT_SECRET, { expiresIn: "1D" }
         );
 
         res.json({
@@ -140,7 +140,8 @@ export const loginUser = async (req, res) => {
                 city: user.city,
                 pincode: user.pincode,
                 streetaddress: user.streetaddress,
-                dob: user.dob
+                dob: user.dob,
+                role: user.role
             }
         });
     } catch (error) {

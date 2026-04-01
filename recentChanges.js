@@ -1,52 +1,56 @@
+// middleware 
 
+import jwt from "jsonwebtoken";
+export const authMiddleware = (req, res, next) => {
+    const token = req.headers.authorization?.split(" ")[1];
 
-/////////////////////////////  Rollback Funnctions  /////////////////////////
-
-
-
-
-// Route Here
-app.post('/create-checkout-session', authMiddleware, createCheckoutSession);
-
-
-// create checkout session function
-export const createCheckoutSession = async (req, res) => {
-    const { planType, plan } = req.body;
-    const userId = req.user.userId;
-    const priceMap = {
-        basic: 780,
-        premium: 999,
-        pro: 1900,
-    };
+    if (!token) {
+        return res.status(401).json({ message: "No token" });
+    }
     try {
-        const session = await stripe.checkout.sessions.create({
-            payment_method_types: ["card"],
-            mode: "payment",
-            line_items: [
-                {
-                    price_data: {
-                        currency: "inr",
-                        product_data: {
-                            name: plan,
-                        },
-                        unit_amount: priceMap[plan]
-                    },
-                    quantity: 1
-                }
-            ],
-            success_url: `${process.env.CLIENT_url}/success`,
-            cancel_url: `${process.env.CLIENT_url}`,
-
-            metadata: {
-                userId,
-                plan,
-                planType,
-            }
-        });
-        res.json({ url: session.url });
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = decoded;
+        next();
     } catch (error) {
-        console.log(error);
-        res.status(500).send(`Stripe Error: ${error.message}`);
+        return res.status(401).json({ message: "Invalid token" });
+
+    }
+}
+
+
+
+// ugser model :
+
+
+import mongoose from "mongoose";
+
+const userSchema = new mongoose.Schema({
+
+    name: { type: String, required: true },
+    email: { type: String, required: true },
+    password: { type: String, required: true },
+    phone: { type: String, required: true },
+    country: { type: String, required: true },
+    city: { type: String, required: true },
+    state: { type: String, required: true },
+    pincode: { type: String, required: true },
+    streetaddress: { type: String, required: true },
+    dob: { type: Date, required: true },
+    isVerified: { type: Boolean, default: false },
+
+    role: {
+        type: String,
+        enum: ["user", "beneficiary"],
+        default: "user"
+    },
+
+    // For beneficiary
+    ownerId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        default: null
     }
 
-}
+}, { timestamps: true });
+
+export default mongoose.model("User", userSchema);
