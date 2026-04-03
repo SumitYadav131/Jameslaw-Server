@@ -49,3 +49,14 @@ export const registerBeneficiary = async (req, res) => {
         res.status(500).json({ message: "Server error" });
     }
 };
+
+export const getBeneficiaries = async (req, res) => {
+    const ownerId = req.user.userId;
+    try {
+        const beneficiaries = await Beneficiary.find({ ownerId }).populate("beneficiaryId", "name email");
+        res.json({ beneficiaries });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Server error" });
+    }
+};
