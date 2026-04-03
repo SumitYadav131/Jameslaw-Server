@@ -7,7 +7,7 @@ import { registerSubscription, getSubscription, cancelSubscription } from "./con
 import { createCheckoutSession, createPaymentIntent } from "./controllers/paymentController.js";
 import { registerBeneficiary } from "./controllers/beneficiaryController.js";
 import { uploadMiddleware } from "./controllers/middleware/middleware.js";
-import { uploadDocument } from "./controllers/documentController.js";
+import { uploadDocument, getDocuments } from "./controllers/documentController.js";
 import { upload } from "./controllers/middleware/upload.js";
 
 const app = express();
@@ -52,6 +52,8 @@ app.post('/registerbeneficiary', authMiddleware, registerBeneficiary);
 
 // app.post('/stripe-webhook', express.raw({ type: "application/json" }), stripeWebhook);
 app.post('/uploadFile', authMiddleware, upload.single("file"), uploadMiddleware, uploadDocument);
+
+app.get('/mydocuments', authMiddleware, getDocuments);
 
 const PORT = 3000;
 
