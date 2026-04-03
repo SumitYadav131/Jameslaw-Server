@@ -52,7 +52,6 @@ export const uploadMiddleware = (req, res, next) => {
                 message: "Invalid file type (Only PDF, JPG, PNG allowed)",
             });
         }
-
         next();
     } catch (error) {
         console.log(error);
