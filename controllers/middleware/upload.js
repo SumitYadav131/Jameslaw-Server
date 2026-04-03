@@ -1,21 +1,25 @@
 import multer from "multer";
-
 import fs from "fs";
+import path from "path";
 
-const uploadDir = "uploads";
-
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir);
-}
-
-// simple storage (no config needed for now)
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, "uploads/"); // folder
+        const uploadPath = path.join("uploads");
+
+        if (!fs.existsSync(uploadPath)) {
+            fs.mkdirSync(uploadPath, { recursive: true });
+        }
+
+        cb(null, uploadPath);
     },
+
     filename: (req, file, cb) => {
-        cb(null, Date.now() + "-" + file.originalname);
+        const cleanName = file.originalname.replace(/\s+/g, "-"); // remove spaces
+        cb(null, Date.now() + "-" + cleanName);
     },
 });
 
-export const upload = multer({ storage });
+export const upload = multer({
+    storage,
+    limits: { fileSize: 15 * 1024 * 1024 },
+});
