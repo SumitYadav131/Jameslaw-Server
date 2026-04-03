@@ -6,6 +6,9 @@ import { authMiddleware } from "./controllers/middleware/middleware.js";
 import { registerSubscription, getSubscription, cancelSubscription } from "./controllers/subscriptionController.js"
 import { createCheckoutSession, createPaymentIntent } from "./controllers/paymentController.js";
 import { registerBeneficiary } from "./controllers/beneficiaryController.js";
+import { uploadMiddleware } from "./controllers/middleware/middleware.js";
+import { uploadDocument } from "./controllers/documentController.js";
+import { upload } from "./controllers/middleware/upload.js";
 
 const app = express();
 
@@ -14,6 +17,8 @@ connectDB();
 app.use(express.json());
 
 app.use(cors());
+
+app.use("/uploads", express.static("uploads"));
 
 app.get('/', (req, res) => {
     res.send('server is running');
@@ -46,6 +51,7 @@ app.post('/createPaymentIntent', authMiddleware, createPaymentIntent);
 app.post('/registerbeneficiary', authMiddleware, registerBeneficiary);
 
 // app.post('/stripe-webhook', express.raw({ type: "application/json" }), stripeWebhook);
+app.post('/uploadFile', authMiddleware, upload.single("file"), uploadMiddleware, uploadDocument);
 
 const PORT = 3000;
 
