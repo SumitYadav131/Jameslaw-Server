@@ -38,6 +38,7 @@ export const registerBeneficiary = async (req, res) => {
             dob: dob,
             streetaddress: streetaddress,
             role: "beneficiary",
+            ownerId: ownerId
 
         });
 
@@ -70,3 +71,18 @@ export const getBeneficiaries = async (req, res) => {
         res.status(500).json({ message: "Server error" });
     }
 };
+
+// Delete beneficiary
+export const deleteBeneficiary = async (req, res) => {
+    const ownerId = req.user.userId;
+    const beneficiaryId = req.params.id;
+    try {
+        await Beneficiary.findOneAndDelete({ ownerId, beneficiaryId });
+        await User.findByIdAndDelete(beneficiaryId);
+        res.status(200).json({ message: "Beneficiary deleted successfully" });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Error deleting beneficiary" });
+
+    }
+}

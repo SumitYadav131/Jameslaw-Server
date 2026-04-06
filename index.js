@@ -5,7 +5,7 @@ import cors from "cors";
 import { authMiddleware } from "./controllers/middleware/middleware.js";
 import { registerSubscription, getSubscription, cancelSubscription } from "./controllers/subscriptionController.js"
 import { createCheckoutSession, createPaymentIntent } from "./controllers/paymentController.js";
-import { registerBeneficiary, getBeneficiaries } from "./controllers/beneficiaryController.js";
+import { registerBeneficiary, getBeneficiaries, deleteBeneficiary } from "./controllers/beneficiaryController.js";
 import { uploadMiddleware } from "./controllers/middleware/middleware.js";
 import { uploadDocument, getDocuments } from "./controllers/documentController.js";
 import { upload } from "./controllers/middleware/upload.js";
@@ -51,11 +51,16 @@ app.post('/createPaymentIntent', authMiddleware, createPaymentIntent);
 app.post('/registerbeneficiary', authMiddleware, registerBeneficiary);
 
 // app.post('/stripe-webhook', express.raw({ type: "application/json" }), stripeWebhook);
+
 app.post('/uploadFile', authMiddleware, upload.single("file"), uploadMiddleware, uploadDocument);
 
 app.get('/mydocuments', authMiddleware, getDocuments);
 
 app.get('/mybeneficiaries', authMiddleware, getBeneficiaries);
+
+app.delete('/deletebeneficiary/:id', authMiddleware, deleteBeneficiary);
+
+
 
 const PORT = 3000;
 
