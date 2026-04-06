@@ -7,7 +7,7 @@ import bcrypt from "bcryptjs";
 export const registerBeneficiary = async (req, res) => {
     const ownerId = req.user.userId; // logged-in user
 
-    const { name, email, password, relationship, } = req.body;
+    const { name, email, password, relationship, dob, streetaddress, pincode, state, city, country, phone } = req.body;
 
     if (!name || !email || !password || !relationship) {
         return res.status(400).json({ message: "All fields required" });
@@ -30,7 +30,15 @@ export const registerBeneficiary = async (req, res) => {
             name,
             email: lowerEmail,
             password: hashedPassword,
-            role: "beneficiary"
+            phone: phone,
+            country: country,
+            city: city,
+            state: state,
+            pincode: pincode,
+            dob: dob,
+            streetaddress: streetaddress,
+            role: "beneficiary",
+
         });
 
         // create relation
