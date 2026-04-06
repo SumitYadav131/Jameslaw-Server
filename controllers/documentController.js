@@ -42,11 +42,7 @@ export const deleteDocument = async (req, res) => {
     try {
         const userId = req.user.userId;
         const docId = req.params.id;
-        const doc = await Document.findOne({ _id: docId, userId });
-        if (!doc) {
-            return res.status(404).json({ message: "Document not found" });
-        }
-        await doc.remove();
+        const doc = await Document.findOneAndDelete({ _id: docId, userId });
         res.json({ message: "Document deleted successfully" });
     }
     catch (error) {
