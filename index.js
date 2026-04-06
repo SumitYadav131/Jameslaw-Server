@@ -1,13 +1,13 @@
 import express from "express";
 import connectDB from "./db.js";
-import { registerUser, checkUser, loginUser, verifyEmail, updateProfile, updateProfilepass, getProfileDetails } from "./controllers/userController.js"
 import cors from "cors";
+import { registerUser, checkUser, loginUser, verifyEmail, updateProfile, updateProfilepass, getProfileDetails } from "./controllers/userController.js"
 import { authMiddleware } from "./controllers/middleware/middleware.js";
 import { registerSubscription, getSubscription, cancelSubscription } from "./controllers/subscriptionController.js"
 import { createCheckoutSession, createPaymentIntent } from "./controllers/paymentController.js";
 import { registerBeneficiary, getBeneficiaries, deleteBeneficiary } from "./controllers/beneficiaryController.js";
 import { uploadMiddleware } from "./controllers/middleware/middleware.js";
-import { uploadDocument, getDocuments } from "./controllers/documentController.js";
+import { uploadDocument, getDocuments, deleteDocument } from "./controllers/documentController.js";
 import { upload } from "./controllers/middleware/upload.js";
 
 const app = express();
@@ -59,6 +59,9 @@ app.get('/mydocuments', authMiddleware, getDocuments);
 app.get('/mybeneficiaries', authMiddleware, getBeneficiaries);
 
 app.delete('/deletebeneficiary/:id', authMiddleware, deleteBeneficiary);
+
+app.delete('/deletedocument/:id', authMiddleware, deleteDocument);
+
 
 
 

@@ -1,4 +1,6 @@
 import Document from "../models/Document.js";
+
+// Upload a document
 export const uploadDocument = async (req, res) => {
     try {
         const userId = req.user.userId;
@@ -13,7 +15,6 @@ export const uploadDocument = async (req, res) => {
             fileType: req.file.mimetype,
             fileSize: req.file.size,
             originalName: req.file.originalname,
-
         });
         res.json({
             message: "File uploaded successfully", document: doc
@@ -24,6 +25,7 @@ export const uploadDocument = async (req, res) => {
     }
 }
 
+// Get user's documents
 export const getDocuments = async (req, res) => {
     try {
         const userId = req.user.userId;
@@ -32,5 +34,23 @@ export const getDocuments = async (req, res) => {
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: "Failed to fetch documents" });
+    }
+}
+
+// Delete document 
+export const deleteDocument = async (req, res) => {
+    try {
+        const userId = req.user.userId;
+        const docId = req.params.id;
+        const doc = await Document.findOne({ _id: docId, userId });
+        if (!doc) {
+            return res.status(404).json({ message: "Document not found" });
+        }
+        await doc.remove();
+        res.json({ message: "Document deleted successfully" });
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Failed to delete document" });
     }
 }
