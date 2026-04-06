@@ -50,6 +50,8 @@ export const registerBeneficiary = async (req, res) => {
     }
 };
 
+
+// Get beneficiaries for logged-in user
 export const getBeneficiaries = async (req, res) => {
     const ownerId = req.user.userId;
     try {
