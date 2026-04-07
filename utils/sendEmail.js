@@ -27,7 +27,7 @@ export const sendEmail = async (to, subject, html) => {
             user: process.env.EMAIL_USER,
             pass: process.env.EMAIL_PASS,
         },
-        connectionTimeout: 20000, // increase timeout
+        connectionTimeout: 20000, // 20sec timeout
     });
 
     await transporter.sendMail({
