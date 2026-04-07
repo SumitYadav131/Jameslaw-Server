@@ -64,7 +64,7 @@ export const registerBeneficiary = async (req, res) => {
 export const getBeneficiaries = async (req, res) => {
     const ownerId = req.user.userId;
     try {
-        const beneficiaries = await Beneficiary.find({ ownerId }).populate("beneficiaryId", "name email");
+        const beneficiaries = await Beneficiary.find({ ownerId }).populate("beneficiaryId", "name email dob streetaddress pincode state city country phone");
         res.json({ beneficiaries });
     } catch (error) {
         console.log(error);
