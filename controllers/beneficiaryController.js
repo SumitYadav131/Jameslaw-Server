@@ -86,3 +86,56 @@ export const deleteBeneficiary = async (req, res) => {
 
     }
 }
+
+export const updateBeneficiary = async (req, res) => {
+    try {
+        const { beneficiaryId } = req.params;
+
+        const {
+            name,
+            email,
+            phone,
+            streetaddress,
+            city,
+            state,
+            country,
+            pincode,
+            dob,
+            relationship
+        } = req.body;
+
+        // Update user
+        const updatedUser = await User.findByIdAndUpdate(
+            beneficiaryId,
+            {
+                name,
+                email,
+                phone,
+                streetaddress,
+                city,
+                state,
+                country,
+                pincode,
+                dob
+            },
+            { new: true }
+        );
+
+        // Update beneficiary relationship
+        await Beneficiary.findOneAndUpdate(
+            { beneficiaryId: beneficiaryId },
+            { relationship }
+        );
+
+        res.json({
+            message: "Beneficiary updated successfully",
+            user: updatedUser
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            message: "Update failed",
+            error: error.message
+        });
+    }
+};
