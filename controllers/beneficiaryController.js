@@ -88,7 +88,9 @@ export const deleteBeneficiary = async (req, res) => {
 // Update beneficiary
 export const updateBeneficiary = async (req, res) => {
     try {
-        const { beneficiaryId } = req.params;
+        const { id } = req.params;
+
+        const beneficiaryId = id;
 
         const {
             name,
