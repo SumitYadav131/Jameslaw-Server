@@ -62,7 +62,7 @@ app.delete('/deletebeneficiary/:id', authMiddleware, deleteBeneficiary);
 
 app.delete('/deletedocument/:id', authMiddleware, deleteDocument);
 
-app.put('updatebeneficiary/:id', authMiddleware, updateBeneficiary);
+app.put('/updatebeneficiary/:id', authMiddleware, updateBeneficiary);
 
 
 
