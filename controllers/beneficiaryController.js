@@ -2,7 +2,6 @@ import Beneficiary from "../models/Beneficiary.js";
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 
-
 // Register a new beneficiary
 export const registerBeneficiary = async (req, res) => {
     const ownerId = req.user.userId; // logged-in user
@@ -59,7 +58,6 @@ export const registerBeneficiary = async (req, res) => {
     }
 };
 
-
 // Get beneficiaries for logged-in user
 export const getBeneficiaries = async (req, res) => {
     const ownerId = req.user.userId;
@@ -87,6 +85,7 @@ export const deleteBeneficiary = async (req, res) => {
     }
 }
 
+// Update beneficiary
 export const updateBeneficiary = async (req, res) => {
     try {
         const { beneficiaryId } = req.params;
