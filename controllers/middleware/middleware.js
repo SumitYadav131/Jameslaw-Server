@@ -43,14 +43,14 @@ export const uploadMiddleware = (req, res, next) => {
         // optional: file type validation
         const allowedTypes = [
             "application/pdf",
-            "image/jpeg",
-            "image/png",
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            "application/msword"
         ];
 
         if (!allowedTypes.includes(req.file.mimetype)) {
             return res.status(400).json({
                 success: false,
-                message: "Invalid file type (Only PDF, JPG, PNG allowed)",
+                message: "Invalid file type (Only PDF, DOCX , DOC allowed)",
             });
         }
         next();

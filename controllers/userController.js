@@ -64,7 +64,7 @@ export const registerUser = async (req, res) => {
             "Verify Your Account",
             `<h2>Click below to verify</h2>
          <a href="${verifyLink}">Verify Email</a>`
-        );
+        ).catch(err => console.log("Email failed:", err));
 
         res.status(200).json({
             message: "Verification email sent. Please check your email."
@@ -125,6 +125,64 @@ export const loginUser = async (req, res) => {
         const token = jwt.sign(
             { userId: user.id, role: user.role || "user" }, process.env.JWT_SECRET, { expiresIn: "1D" }
         );
+        const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+
+        const html = `
+<div style="font-family: Arial, sans-serif;  padding:20px;">
+  <div style="max-width:600px; margin:auto; background:#ffffff; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.05);">
+    
+    <!-- Header -->
+    <div style="background:#F5B301; color:#fff; padding:16px 24px;">
+      <h2 style="margin:0;">Security Alert</h2>
+    </div>
+
+    <!-- Body -->
+    <div style="padding:24px; color:#333;">
+      <p style="font-size:16px;">Hello <strong>${user.name}</strong>,</p>
+
+      <p style="font-size:15px;">
+        We detected a new login to your account.
+      </p>
+
+      <!-- Info Box -->
+      <div style="background:#f8f9fa; border:1px solid #e9ecef; border-radius:6px; padding:12px 16px; margin:16px 0;">
+        <p style="margin:6px 0;"><strong>Time:</strong> ${new Date().toLocaleString()}</p>
+        <p style="margin:6px 0;"><strong>IP Address:</strong> ${ip}</p>
+      </div>
+
+      <!-- Warning -->
+      <p style="color:#dc3545; font-weight:bold;">
+        If this wasn't you, please secure your account immediately.
+      </p>
+
+      <!-- Button -->
+      <div style="text-align:center; margin:24px 0;">
+        <a
+           style="background:#F5B301; color:#fff; padding:10px 20px; text-decoration:none; border-radius:5px; font-size:14px;">
+           Secure My Account
+        </a>
+      </div>
+
+      <p style="font-size:14px; color:#666;">
+        If you recognize this activity, you can safely ignore this email.
+      </p>
+    </div>
+
+    <!-- Footer -->
+    <div style="background:#f1f3f5; text-align:center; padding:12px; font-size:12px; color:#777;">
+      © ${new Date().getFullYear()} Will & Trust Bank. All rights reserved.
+    </div>
+
+  </div>
+</div>
+`;
+
+        await sendEmail(
+            user.email,
+            "Login Alert",
+            html
+
+        ).catch(err => console.log("Email failed:", err));
 
         res.json({
             message: "Login Successful",
@@ -254,7 +312,7 @@ export const updateProfilepass = async (req, res) => {
 
 }
 
-
+// Get Profile Details
 export const getProfileDetails = async (req, res) => {
     const userId = req.user.userId;
     try {
