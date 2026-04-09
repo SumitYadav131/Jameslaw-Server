@@ -372,8 +372,11 @@ export const forgotPassword = async (req, res) => {
 // Reset Password
 export const resetPassword = async (req, res) => {
     const { token } = req.params;
-    const { newPassword } = req.body;
+    const { newPassword, confirmPassword } = req.body;
     try {
+        if (newPassword !== confirmPassword) {
+            return res.status(400).json({ message: "Password do not match" });
+        }
         const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
         const user = await User.findOne({
             resetPasswordToken: hashedToken,
@@ -387,7 +390,6 @@ export const resetPassword = async (req, res) => {
         user.resetPasswordToken = undefined;
         user.resetPasswordExpire = undefined;
         await user.save();
-
         res.json({ message: "Password reset successfully" });
 
     } catch (error) {
