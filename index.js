@@ -1,7 +1,7 @@
 import express from "express";
 import connectDB from "./db.js";
 import cors from "cors";
-import { registerUser, checkUser, loginUser, verifyEmail, updateProfile, updateProfilepass, getProfileDetails } from "./controllers/userController.js"
+import { registerUser, checkUser, loginUser, verifyEmail, updateProfile, updateProfilepass, getProfileDetails, resetPassword, forgotPassword } from "./controllers/userController.js"
 import { authMiddleware } from "./controllers/middleware/middleware.js";
 import { registerSubscription, getSubscription, cancelSubscription } from "./controllers/subscriptionController.js"
 import { createCheckoutSession, createPaymentIntent } from "./controllers/paymentController.js";
@@ -64,8 +64,9 @@ app.delete('/deletedocument/:id', authMiddleware, deleteDocument);
 
 app.put('/updatebeneficiary/:id', authMiddleware, updateBeneficiary);
 
+app.post('/forgotpassword', forgotPassword);
 
-
+app.post('/resetpassword/:token', resetPassword);
 
 const PORT = 3000;
 

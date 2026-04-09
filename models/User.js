@@ -13,7 +13,8 @@ const userSchema = new mongoose.Schema({
     streetaddress: { type: String, required: true },
     dob: { type: Date },
     isVerified: { type: Boolean, default: false },
-
+    resetPasswordToken: { type: String },
+    resetPasswordExpire: { type: Date },
     role: {
         type: String,
         enum: ["user", "beneficiary"],
