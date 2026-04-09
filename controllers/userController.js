@@ -101,7 +101,7 @@ export const checkUser = async (req, res) => {
 }
 
 // Login User
-export const loginUser = async (req, res) => {``
+export const loginUser = async (req, res) => {
     console.log("running login route");
     const { email, password } = req.body;
 
@@ -348,13 +348,62 @@ export const forgotPassword = async (req, res) => {
 
         const resetURL = `${clientUrl}resetpassword/${resetToken}`;
 
+        //     const message = `
+        //   <h2>Password Reset Request</h2>
+        //   <p>Hello ${user.name},</p>
+        //   <p>Click below to reset password:</p>
+        //   <a href="${resetURL}">${resetURL}</a>
+        //   <p>This link expires in 15 minutes</p>
+        // `;
+
         const message = `
-      <h2>Password Reset Request</h2>
-      <p>Hello ${user.name},</p>
-      <p>Click below to reset password:</p>
-      <a href="${resetURL}">${resetURL}</a>
-      <p>This link expires in 15 minutes</p>
-    `;
+<div style="font-family: Arial, sans-serif; background-color: #f4f6f8; padding: 20px;">
+  <div style="max-width: 600px; margin: auto; background: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+
+    <!-- Header -->
+    <div style="background-color: #F5B301; padding: 20px; text-align: center; color: #ffffff;">
+      <h2 style="margin: 0;">Password Reset</h2>
+    </div>
+
+    <!-- Body -->
+    <div style="padding: 30px;">
+      <p style="font-size: 16px;">Hello <strong>${user.name}</strong>,</p>
+
+      <p style="font-size: 14px; color: #555;">
+        We received a request to reset your password. Click the button below to set a new password.
+      </p>
+
+      <!-- Button -->
+      <div style="text-align: center; margin: 30px 0;">
+        <a href="${resetURL}" 
+           style="background-color: #F5B301; color: #ffffff; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-size: 14px; display: inline-block;">
+          Reset Password
+        </a>
+      </div>
+
+      <p style="font-size: 13px; color: #777;">
+        This link will expire in <strong>15 minutes</strong>.
+      </p>
+
+      <p style="font-size: 13px; color: #777;">
+        If you did not request this, you can safely ignore this email.
+      </p>
+
+      <!-- Fallback link -->
+      <p style="font-size: 12px; color: #999; margin-top: 20px;">
+        Or copy and paste this URL into your browser:<br/>
+        <a href="${resetURL}" style="color: #4CAF50;">${resetURL}</a>
+      </p>
+    </div>
+
+    <!-- Footer -->
+    <div style="background-color: #f1f1f1; padding: 15px; text-align: center; font-size: 12px; color: #888;">
+      © ${new Date().getFullYear()} Your Company. All rights reserved.
+    </div>
+
+  </div>
+</div>
+`;
 
         await sendEmail(user.email, "Reset Password", message);
 
