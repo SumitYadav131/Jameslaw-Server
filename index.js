@@ -1,7 +1,7 @@
 import express from "express";
 import connectDB from "./db.js";
 import cors from "cors";
-import { registerUser, checkUser, loginUser, verifyEmail, updateProfile, updateProfilepass, getProfileDetails, resetPassword, forgotPassword } from "./controllers/userController.js"
+import { registerUser, checkUser, loginUser, verifyEmail, updateProfile, updateProfilepass, getProfileDetails, resetPassword, forgotPassword, verifyOtp } from "./controllers/userController.js"
 import { authMiddleware } from "./controllers/middleware/middleware.js";
 import { registerSubscription, getSubscription, cancelSubscription } from "./controllers/subscriptionController.js"
 import { createCheckoutSession, createPaymentIntent } from "./controllers/paymentController.js";
@@ -31,6 +31,8 @@ app.post('/register', registerUser);
 app.get('/verify-email', verifyEmail);
 
 app.post('/login', loginUser);
+
+app.post('/verifyloginotp', verifyOtp);
 
 app.put('/update-profile', updateProfile);
 

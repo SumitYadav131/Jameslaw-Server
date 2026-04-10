@@ -124,24 +124,85 @@ export const loginUser = async (req, res) => {
             return res.status(401).json({ message: "Invalid Credentials" });
         }
 
-        // Generate OTP
-        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        const token = jwt.sign(
+            { userId: user.id, role: user.role || "user" }, process.env.JWT_SECRET, { expiresIn: "1D" }
+        );
+        const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
 
-        user.otp = otp;
-        user.otpExpire = Date.now() + 5 * 60 * 1000; // 5 min
+        const html = `
+<div style="font-family: Arial, sans-serif;  padding:20px;">
+  <div style="max-width:600px; margin:auto; background:#ffffff; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.05);">
+    
+    <!-- Header -->
+    <div style="background:#F5B301; color:#fff; padding:16px 24px;">
+      <h2 style="margin:0;">Security Alert</h2>
+    </div>
 
-        await user.save();
+    <!-- Body -->
+    <div style="padding:24px; color:#333;">
+      <p style="font-size:16px;">Hello <strong>${user.name}</strong>,</p>
 
-        // Send mail
+      <p style="font-size:15px;">
+        We detected a new login to your account.
+      </p>
+
+      <!-- Info Box -->
+      <div style="background:#f8f9fa; border:1px solid #e9ecef; border-radius:6px; padding:12px 16px; margin:16px 0;">
+        <p style="margin:6px 0;"><strong>Time:</strong> ${new Date().toLocaleString()}</p>
+        <p style="margin:6px 0;"><strong>IP Address:</strong> ${ip}</p>
+      </div>
+
+      <!-- Warning -->
+      <p style="color:#dc3545; font-weight:bold;">
+        If this wasn't you, please secure your account immediately.
+      </p>
+
+      <!-- Button -->
+      <div style="text-align:center; margin:24px 0;">
+        <a
+           style="background:#F5B301; color:#fff; padding:10px 20px; text-decoration:none; border-radius:5px; font-size:14px;">
+           Secure My Account
+        </a>
+      </div>
+
+      <p style="font-size:14px; color:#666;">
+        If you recognize this activity, you can safely ignore this email.
+      </p>
+    </div>
+
+    <!-- Footer -->
+    <div style="background:#f1f3f5; text-align:center; padding:12px; font-size:12px; color:#777;">
+      © ${new Date().getFullYear()} Will & Trust Bank. All rights reserved.
+    </div>
+
+  </div>
+</div>
+`;
+
         await sendEmail(
             user.email,
-            "Your Login OTP",
-            `<h2>Your OTP is: ${otp}</h2><p>Valid for 5 minutes</p>`
+            "Login Alert",
+            html
+
         ).catch(err => console.log("Email failed:", err));
 
         res.json({
-            message: "OTP sent to email",
-            userId: user._id
+            message: "Login Successful",
+            token,
+            user: {
+                // changed id name
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                state: user.state,
+                phone: user.phone,
+                country: user.country,
+                city: user.city,
+                pincode: user.pincode,
+                streetaddress: user.streetaddress,
+                dob: user.dob,
+                role: user.role
+            }
         });
 
     } catch (error) {
@@ -152,33 +213,8 @@ export const loginUser = async (req, res) => {
     }
 }
 
-// Verify Otp
-export const verifyOtp = async (req, res) => {
-    const { userId, otp } = req.body;
-    try {
-        const user = await User.findById(userId);
-        if (!user || user.otp != otp || user.otpExpire < Date.now()) {
-            return res.status(400).json({ message: "Invalid or expired OTP" });
-        }
-        // Clear OTP
-        user.otp = undefined;
-        user.otpExpire = undefined;
+export const loginOnOtp = async (req, res) => {
 
-        // Generate token
-        const token = jwt.sign(
-            { userId: user._id },
-            process.env.JWT_SECRET,
-            { expiresIn: "1d" }
-        );
-
-        res.json({
-            message: "Login successful",
-            token,
-            user
-        });
-    } catch (error) {
-        console.log(error);
-    }
 }
 
 // Verify Email
