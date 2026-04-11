@@ -7,7 +7,7 @@ const beneficiarySchema = new mongoose.Schema({
 
     relationship: {
         type: String,
-        enum: ["father", "mother", "child", "other"]
+        enum: ["father", "mother", "child", "other"],
     }
 
 }, { timestamps: true });

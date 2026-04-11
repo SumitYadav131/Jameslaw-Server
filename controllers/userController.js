@@ -16,7 +16,6 @@ export const registerUser = async (req, res) => {
 
     console.log(baseurl);
 
-
     const { name, email, password, phone, country, city, pincode, state, dob, streetaddress } = req.body;
 
     if (!name || !email || !password || !country || !state || !pincode || !phone || !streetaddress) {
@@ -52,10 +51,7 @@ export const registerUser = async (req, res) => {
             verifyTokenExpiry: Date.now() + 60 * 60 * 1000
         });
 
-        const verifyLink = `${baseurl}/verify-email?token=${verifyToken}`;
-
-        // const verifyLink = `http://localhost:3000/verify-email?token=${verifyToken}`;
-
+        const verifyLink = `${baseurl}verify-email?token=${verifyToken}`;
         // Will add nodemailer 
         console.log("Verify Link:", verifyLink);
 
@@ -152,6 +148,17 @@ export const loginUser = async (req, res) => {
     }
 }
 
+// Get All Users 
+export const getAllUsers = async (req, res) => {
+    try {
+        const users = await User.find();
+        res.json({ users });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Server Error" });
+    }
+}
+
 // Verify Otp
 export const verifyOtp = async (req, res) => {
     const { userId, otp } = req.body;
@@ -214,7 +221,7 @@ export const verifyEmail = async (req, res) => {
             _id: pendingUser._id
         });
 
-        res.redirect(`${clientUrl}/login`)
+        res.redirect(`${clientUrl}login`)
 
     } catch (error) {
         console.log(error);
