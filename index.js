@@ -9,6 +9,7 @@ import { registerBeneficiary, getBeneficiaries, deleteBeneficiary, updateBenefic
 import { uploadMiddleware } from "./controllers/middleware/middleware.js";
 import { uploadDocument, getDocuments, deleteDocument } from "./controllers/documentController.js";
 import { upload } from "./controllers/middleware/upload.js";
+import { deleteUser, registerUserByAdmin, } from "./controllers/adminController.js";
 
 const app = express();
 
@@ -28,6 +29,8 @@ app.post('/check', checkUser);
 
 app.post('/register', registerUser);
 
+// app.get('/getuser/:id', getUserDetail);
+
 app.get('/getallusers', getAllUsers);
 
 app.get('/verify-email', verifyEmail);
@@ -35,6 +38,10 @@ app.get('/verify-email', verifyEmail);
 app.post('/login', loginUser);
 
 app.post('/verifyloginotp', verifyOtp);
+
+app.delete('/admindeleteuser/:id', deleteUser);
+
+app.post('/adminregisteruser', registerUserByAdmin);
 
 app.put('/update-profile', updateProfile);
 
