@@ -201,6 +201,7 @@ export const verifyEmail = async (req, res) => {
 
         if (!pendingUser) {
             return res.status(400).send("Invalid or expired token");
+            res
         }
 
         const user = await User.create({
