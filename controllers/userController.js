@@ -51,7 +51,7 @@ export const registerUser = async (req, res) => {
             verifyTokenExpiry: Date.now() + 60 * 60 * 1000
         });
 
-        const verifyLink = `${baseurl}verify-email?token=${verifyToken}`;
+        const verifyLink = `${baseurl}/verify-email?token=${verifyToken}`;
         // Will add nodemailer 
         console.log("Verify Link:", verifyLink);
 
