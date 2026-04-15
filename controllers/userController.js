@@ -61,7 +61,7 @@ export const registerUser = async (req, res) => {
             email,
             "Verify Your Account",
             `<h2>Click below to verify</h2>
-         <a href="${verifyLink}">Verify Email</a>`
+         <a href="${verifyLink}">/Verify Email</a>`
         ).catch(err => console.log("Email failed:", err));
 
         res.status(200).json({
@@ -221,7 +221,7 @@ export const verifyEmail = async (req, res) => {
             _id: pendingUser._id
         });
 
-        res.redirect(`${clientUrl}login`)
+        res.redirect(`${clientUrl}/login`)
 
     } catch (error) {
         console.log(error);

@@ -10,6 +10,7 @@ import { uploadMiddleware } from "./controllers/middleware/middleware.js";
 import { uploadDocument, getDocuments, deleteDocument } from "./controllers/documentController.js";
 import { upload } from "./controllers/middleware/upload.js";
 import { deleteUser, registerUserByAdmin, } from "./controllers/adminController.js";
+import { createTicket, getTickets, deleteTicket, updateTicketStatus, getUserTicket } from "./controllers/ticketController.js";
 
 const app = express();
 
@@ -78,6 +79,16 @@ app.put('/updatebeneficiary/:id', authMiddleware, updateBeneficiary);
 app.post('/forgotpassword', forgotPassword);
 
 app.post('/resetpassword/:token', resetPassword);
+
+app.post('/createticket', authMiddleware, createTicket);
+
+app.get('/gettickets', getTickets);
+
+app.delete('/deleteticket/:id', deleteTicket);
+
+app.put('/updateticketstatus/:id', updateTicketStatus);
+
+app.get('/getticket/:id', getUserTicket);
 
 const PORT = 3000;
 
