@@ -1,10 +1,11 @@
 import Ticket from "../models/Ticket.js";
 
 // Create Tickets
+
 export const createTicket = async (req, res) => {
     try {
         const userId = req.user.userId;
-        const { name, email, subject, description, attachment, status } = req.body;
+        const { name, email, subject, description, attachment } = req.body;
         const ticket = await Ticket.create({
             userId,
             name,
@@ -12,7 +13,6 @@ export const createTicket = async (req, res) => {
             subject,
             description,
             attachment,
-            status
         });
 
         res.status(201).json({ message: "Ticket Created Successfully", ticket });
@@ -23,7 +23,30 @@ export const createTicket = async (req, res) => {
     }
 }
 
+// export const createTicket = async (req, res) => {
+//     try {
+//         const { name, email, subject, description } = req.body;
+
+//         const ticket = await Ticket.create({
+//             userId: req.user.id, // from auth middleware
+//             name,
+//             email,
+//             subject,
+//             description,
+//             attachment: req.file ? req.file.path : ""
+//         });
+
+
+//         res.status(201).json({ message: "Ticket created", ticket });
+
+//     } catch (error) {
+//         res.status(500).json({ message: "Error creating ticket" });
+//     }
+// };
+
 // Get Tickets
+
+
 export const getTickets = async (req, res) => {
     try {
         const tickets = await Ticket.find();

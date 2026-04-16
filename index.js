@@ -80,7 +80,7 @@ app.post('/forgotpassword', forgotPassword);
 
 app.post('/resetpassword/:token', resetPassword);
 
-app.post('/createticket', authMiddleware, createTicket);
+app.post("/createticket", authMiddleware, createTicket);
 
 app.get('/gettickets', getTickets);
 
