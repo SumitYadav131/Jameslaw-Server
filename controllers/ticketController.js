@@ -1,5 +1,5 @@
 import Ticket from "../models/Ticket.js";
-
+import mongoose from "mongoose";
 // Create Tickets
 
 export const createTicket = async (req, res) => {
@@ -10,7 +10,7 @@ export const createTicket = async (req, res) => {
 
         let fileUrl = "";
 
-        // ✅ FILE COMES FROM req.file (NOT req.body)
+        //  FILE COMES FROM req.file
         if (req.file) {
             fileUrl = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
         }
@@ -64,6 +64,7 @@ export const createTicket = async (req, res) => {
 
 export const getTickets = async (req, res) => {
     try {
+
         const tickets = await Ticket.find();
         res.status(200).json({
             message: "Tickets Fetched Successfully",
@@ -111,6 +112,10 @@ export const updateTicketStatus = async (req, res) => {
 export const getUserTicket = async (req, res) => {
     try {
         const { id } = req.params;
+        // VALIDATION FOR ID
+        if (!id || id === "null" || !mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ message: "Invalid Ticket ID" });
+        }
         const ticket = await Ticket.findById(id);
         res.status(200).json({
             message: "User Ticket Fetched ", ticket
