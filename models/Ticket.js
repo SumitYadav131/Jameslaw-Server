@@ -6,7 +6,7 @@ const ticketSchema = new mongoose.Schema({
     email: { type: String, required: true },
     subject: { type: String, reqquired: true },
     description: { type: String, required: true },
-    attachment: String,
+    attachment: { type: String },
     status: { type: String, ennum: ["open", "close"], default: "open" },
 
 }, { timestamps: true });
