@@ -7,6 +7,7 @@ import { registerSubscription, getSubscription, cancelSubscription } from "./con
 import { createCheckoutSession, createPaymentIntent } from "./controllers/paymentController.js";
 import { registerBeneficiary, getBeneficiaries, deleteBeneficiary, updateBeneficiary } from "./controllers/beneficiaryController.js";
 import { uploadMiddleware } from "./controllers/middleware/middleware.js";
+import { ticketUpload } from "./controllers/middleware/ticketUpload.js";
 import { uploadDocument, getDocuments, deleteDocument } from "./controllers/documentController.js";
 import { upload } from "./controllers/middleware/upload.js";
 import { deleteUser, registerUserByAdmin, } from "./controllers/adminController.js";
@@ -80,7 +81,13 @@ app.post('/forgotpassword', forgotPassword);
 
 app.post('/resetpassword/:token', resetPassword);
 
-app.post("/createticket", authMiddleware, createTicket);
+// app.post("/createticket", authMiddleware, createTicket);
+
+app.post("/createticket",
+    authMiddleware,
+    ticketUpload.single("attachment"), // SAME NAME
+    createTicket
+);
 
 app.get('/gettickets', getTickets);
 
