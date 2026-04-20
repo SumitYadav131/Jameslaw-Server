@@ -5,23 +5,32 @@ import Ticket from "../models/Ticket.js";
 export const createTicket = async (req, res) => {
     try {
         const userId = req.user.userId;
-        const { name, email, subject, description, attachment } = req.body;
+
+        const { name, email, subject, description } = req.body;
+
+        // ✅ get file from multer
+        let fileUrl = null;
+
+        if (req.file) {
+            fileUrl = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
+        }
+
         const ticket = await Ticket.create({
             userId,
             name,
             email,
             subject,
             description,
-            attachment,
+            attachment: fileUrl, // ✅ store URL
         });
 
         res.status(201).json({ message: "Ticket Created Successfully", ticket });
+
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: "Error creating ticket", error });
-
     }
-}
+};
 
 // export const createTicket = async (req, res) => {
 //     try {
