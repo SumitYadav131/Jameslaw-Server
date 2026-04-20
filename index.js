@@ -83,9 +83,10 @@ app.post('/resetpassword/:token', resetPassword);
 
 // app.post("/createticket", authMiddleware, createTicket);
 
-app.post("/createticket",
+app.post(
+    "/createticket",
     authMiddleware,
-    ticketUpload.single("attachment"), // SAME NAME
+    ticketUpload.single("attachment"),
     createTicket
 );
 

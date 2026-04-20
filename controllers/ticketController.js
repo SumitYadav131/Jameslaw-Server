@@ -8,9 +8,9 @@ export const createTicket = async (req, res) => {
 
         const { name, email, subject, description } = req.body;
 
-        // ✅ get file from multer
-        let fileUrl = null;
+        let fileUrl = "";
 
+        // ✅ FILE COMES FROM req.file (NOT req.body)
         if (req.file) {
             fileUrl = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
         }
@@ -21,14 +21,20 @@ export const createTicket = async (req, res) => {
             email,
             subject,
             description,
-            attachment: fileUrl, // ✅ store URL
+            attachment: fileUrl,
         });
 
-        res.status(201).json({ message: "Ticket Created Successfully", ticket });
+        res.status(201).json({
+            message: "Ticket Created Successfully",
+            ticket,
+        });
 
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: "Error creating ticket", error });
+        res.status(500).json({
+            message: "Error creating ticket",
+            error,
+        });
     }
 };
 
