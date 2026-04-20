@@ -64,7 +64,6 @@ export const createTicket = async (req, res) => {
 
 export const getTickets = async (req, res) => {
     try {
-
         const tickets = await Ticket.find().sort({ createdAt: -1 });
         res.status(200).json({
             message: "Tickets Fetched Successfully",
