@@ -1,5 +1,6 @@
 import Ticket from "../models/Ticket.js";
 import mongoose from "mongoose";
+import TicketMessage from "../models/TicketMessage.js";
 // Create Tickets
 
 export const createTicket = async (req, res) => {
@@ -126,3 +127,52 @@ export const getUserTicket = async (req, res) => {
         })
     }
 }
+
+
+// Send ticket message
+export const sendMessage = async (req, res) => {
+    try {
+        const { ticketId, message } = req.body;
+
+        if (!ticketId) {
+            return res.status(400).json({ message: "Ticket ID required" });
+        }
+
+        const newMessage = await TicketMessage.create({
+            ticketId,
+            senderId: req.user.id,
+            senderRole: req.user.role === "admin" ? "admin" : "user",
+            message,
+            attachment: req.file ? req.file.path : null
+        });
+
+        res.status(201).json({
+            message: "Message sent",
+            data: newMessage
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Failed to send message" });
+    }
+};
+
+// Get converstation 
+export const getConversation = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const messages = await TicketMessage.find({ id })
+            .populate("senderId", "name email")
+            .sort({ createdAt: 1 });
+
+        res.json({
+            message: "Conversation fetched",
+            messages
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Failed to fetch conversation" });
+    }
+};
