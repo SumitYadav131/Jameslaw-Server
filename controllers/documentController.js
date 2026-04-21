@@ -60,3 +60,18 @@ export const deleteDocument = async (req, res) => {
         res.status(500).json({ message: "Failed to delete document" });
     }
 }
+
+// Get document details
+export const getDocumentDetail = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const doc = Document.findById(id);
+        res.status(200).json({
+            message: "Document Fetched Successfully", doc
+        })
+    } catch (error) {
+        res.status(500).json({
+            message: "Error fetching the documents", error
+        })
+    }
+} 

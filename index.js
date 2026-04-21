@@ -8,7 +8,7 @@ import { createCheckoutSession, createPaymentIntent } from "./controllers/paymen
 import { registerBeneficiary, getBeneficiaries, deleteBeneficiary, updateBeneficiary } from "./controllers/beneficiaryController.js";
 import { uploadMiddleware } from "./controllers/middleware/middleware.js";
 import { ticketUpload } from "./controllers/middleware/ticketUpload.js";
-import { uploadDocument, getDocuments, deleteDocument } from "./controllers/documentController.js";
+import { uploadDocument, getDocuments, deleteDocument, getDocumentDetail } from "./controllers/documentController.js";
 import { upload } from "./controllers/middleware/upload.js";
 import { deleteUser, registerUserByAdmin, } from "./controllers/adminController.js";
 import { createTicket, getTickets, deleteTicket, updateTicketStatus, getUserTicket } from "./controllers/ticketController.js";
@@ -68,6 +68,8 @@ app.post('/registerbeneficiary', authMiddleware, registerBeneficiary);
 app.post('/uploadFile', authMiddleware, upload.single("file"), uploadMiddleware, uploadDocument);
 
 app.get('/mydocuments', authMiddleware, getDocuments);
+
+app.get('/mydocument/:id', getDocumentDetail)
 
 app.get('/mybeneficiaries', authMiddleware, getBeneficiaries);
 
