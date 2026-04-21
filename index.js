@@ -69,7 +69,7 @@ app.post('/uploadFile', authMiddleware, upload.single("file"), uploadMiddleware,
 
 app.get('/mydocuments', authMiddleware, getDocuments);
 
-app.get('/mydocument/:id', getDocumentDetail)
+app.get('/mydocument/:id', getDocumentDetail);
 
 app.get('/mybeneficiaries', authMiddleware, getBeneficiaries);
 

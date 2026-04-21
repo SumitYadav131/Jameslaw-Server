@@ -62,16 +62,50 @@ export const deleteDocument = async (req, res) => {
 }
 
 // Get document details
+// export const getDocumentDetail = async (req, res) => {
+//     try {
+//         const { id } = req.params;
+//         const doc = await Document.findById(id);
+//         res.status(200).json({
+//             message: "Document Fetched Successfully", doc
+//         })
+//     } catch (error) {
+//         console.log(error);
+//         res.status(500).json({
+//             message: "Error fetching the documents", error
+//         })
+//     }
+// } 
+
 export const getDocumentDetail = async (req, res) => {
     try {
         const { id } = req.params;
-        const doc = Document.findById(id);
+
+        const doc = await Document.findById(id).lean();
+
+        if (!doc) {
+            return res.status(404).json({
+                message: "Document not found"
+            });
+        }
+
+        // Optional: security check
+        // if (doc.userId.toString() !== req.user.id) {
+        //   return res.status(403).json({
+        //     message: "Unauthorized access"
+        //   });
+        // }
+
         res.status(200).json({
-            message: "Document Fetched Successfully", doc
-        })
+            message: "Document Fetched Successfully",
+            doc
+        });
+
     } catch (error) {
+        console.log(error);
         res.status(500).json({
-            message: "Error fetching the documents", error
-        })
+            message: "Error fetching the document",
+            error: error.message
+        });
     }
-} 
+};
