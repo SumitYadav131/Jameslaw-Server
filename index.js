@@ -8,10 +8,10 @@ import { createCheckoutSession, createPaymentIntent } from "./controllers/paymen
 import { registerBeneficiary, getBeneficiaries, deleteBeneficiary, updateBeneficiary } from "./controllers/beneficiaryController.js";
 import { uploadMiddleware } from "./controllers/middleware/middleware.js";
 import { ticketUpload } from "./controllers/middleware/ticketUpload.js";
-import { uploadDocument, getDocuments, deleteDocument, getDocumentDetail } from "./controllers/documentController.js";
+import { uploadDocument, getDocuments, deleteDocument, getDocumentDetail, assignBeneficiaries } from "./controllers/documentController.js";
 import { upload } from "./controllers/middleware/upload.js";
 import { deleteUser, registerUserByAdmin, } from "./controllers/adminController.js";
-import { createTicket, getTickets, deleteTicket, updateTicketStatus, getUserTicket } from "./controllers/ticketController.js";
+import { createTicket, getTickets, deleteTicket, updateTicketStatus, getUserTicket, sendMessage, getConversation } from "./controllers/ticketController.js";
 
 const app = express();
 
@@ -82,6 +82,8 @@ app.delete('/deletebeneficiary/:id', authMiddleware, deleteBeneficiary);
 
 app.delete('/deletedocument/:id', authMiddleware, deleteDocument);
 
+app.put('/assignbeneficiaries/:docId', assignBeneficiaries);
+
 app.put('/updatebeneficiary/:id', authMiddleware, updateBeneficiary);
 
 app.post('/forgotpassword', forgotPassword);
@@ -90,12 +92,7 @@ app.post('/resetpassword/:token', resetPassword);
 
 // app.post("/createticket", authMiddleware, createTicket);
 
-app.post(
-    "/createticket",
-    authMiddleware,
-    ticketUpload.single("attachment"),
-    createTicket
-);
+app.post("/createticket", authMiddleware, ticketUpload.single("attachment"), createTicket);
 
 app.get('/gettickets', getTickets);
 
@@ -104,6 +101,10 @@ app.delete('/deleteticket/:id', deleteTicket);
 app.put('/updateticketstatus/:id', updateTicketStatus);
 
 app.get('/getticket/:id', getUserTicket);
+
+app.post('/sendticketmessage', authMiddleware, sendMessage);
+
+app.get('/conversation/:id', getConversation);
 
 const PORT = 3000;
 

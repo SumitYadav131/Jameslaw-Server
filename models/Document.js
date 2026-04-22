@@ -7,8 +7,13 @@ const documentSchema = new mongoose.Schema({
     filePath: { type: String, required: true },
     fileType: { type: String, required: true },
     fileSize: { type: Number, required: true },
-    originalName: { type: String }
-
+    originalName: { type: String },
+    beneficiaries: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        }
+    ]
 
 }, { timestamps: true }
 );

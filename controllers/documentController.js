@@ -4,6 +4,7 @@ import Beneficiary from "../models/Beneficiary.js";
 // Upload a document
 export const uploadDocument = async (req, res) => {
     try {
+        const { beneficiaries } = req.body;
         const userId = req.user.userId;
         const { docName } = req.body;
         if (!req.file) {
@@ -16,6 +17,8 @@ export const uploadDocument = async (req, res) => {
             fileType: req.file.mimetype,
             fileSize: req.file.size,
             originalName: req.file.originalname,
+            beneficiaries: beneficiaries ? JSON.parse(beneficiaries) : []
+
         });
         res.json({
             message: "File uploaded successfully", document: doc
@@ -36,7 +39,10 @@ export const getDocuments = async (req, res) => {
             beneficiaryId: userId
         })
         if (beneficiary) {
-            docs = await Document.find({ userId: beneficiary.ownerId }).sort({ createdAt: -1 });
+            docs = await Document.find({
+                beneficiaries: userId
+            }).sort({ createdAt: -1 });
+
         } else {
             docs = await Document.find({ userId: userId }).sort({ createdAt: -1 });
         }
@@ -47,7 +53,33 @@ export const getDocuments = async (req, res) => {
     }
 }
 
-// Delete document 
+
+
+
+// get user's document Backup 
+
+// export const getDocuments = async (req, res) => {
+//     try {
+//         const userId = req.user.userId;
+//         let docs;
+//         // Beneficiaries allow to show owner docs
+//         const beneficiary = await Beneficiary.findOne({
+//             beneficiaryId: userId
+//         })
+//         if (beneficiary) {
+//             docs = await Document.find({ userId: beneficiary.ownerId }).sort({ createdAt: -1 });
+//         } else {
+//             docs = await Document.find({ userId: userId }).sort({ createdAt: -1 });
+//         }
+//         res.json({ success: true, documents: docs, beneficiary, user: userId });
+//     } catch (error) {
+//         console.log(error);
+//         res.status(500).json({ message: "Failed to fetch documents" });
+//     }
+// }
+
+// backup ends here
+
 export const deleteDocument = async (req, res) => {
     try {
         const userId = req.user.userId;
@@ -77,6 +109,7 @@ export const deleteDocument = async (req, res) => {
 //     }
 // } 
 
+// Get document details
 export const getDocumentDetail = async (req, res) => {
     try {
         const { id } = req.params;
@@ -107,5 +140,28 @@ export const getDocumentDetail = async (req, res) => {
             message: "Error fetching the document",
             error: error.message
         });
+    }
+};
+
+// Assign Beneficiaries
+export const assignBeneficiaries = async (req, res) => {
+    try {
+        const { docId } = req.params;
+        const { beneficiaries } = req.body; // array of userIds
+
+        const doc = await Document.findByIdAndUpdate(
+            docId,
+            { beneficiaries },
+            { new: true }
+        );
+
+        res.json({
+            message: "Beneficiaries assigned",
+            doc
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Failed to assign beneficiaries" });
     }
 };

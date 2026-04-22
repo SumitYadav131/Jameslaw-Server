@@ -16,6 +16,7 @@ export const createTicket = async (req, res) => {
             fileUrl = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
         }
 
+
         const ticket = await Ticket.create({
             userId,
             name,
@@ -23,6 +24,14 @@ export const createTicket = async (req, res) => {
             subject,
             description,
             attachment: fileUrl,
+        });
+
+
+        await TicketMessage.create({
+            ticketId: ticket._id,
+            senderId: userId,
+            senderRole: "user",
+            message: description
         });
 
         res.status(201).json({
@@ -140,7 +149,7 @@ export const sendMessage = async (req, res) => {
 
         const newMessage = await TicketMessage.create({
             ticketId,
-            senderId: req.user.id,
+            senderId: req.user.userId,
             senderRole: req.user.role === "admin" ? "admin" : "user",
             message,
             attachment: req.file ? req.file.path : null
@@ -162,7 +171,9 @@ export const getConversation = async (req, res) => {
     try {
         const { id } = req.params;
 
-        const messages = await TicketMessage.find({ id })
+        // const messages = await TicketMessage.findById(id)
+        const messages = await TicketMessage.find({ ticketId: id })
+
             .populate("senderId", "name email")
             .sort({ createdAt: 1 });
 
