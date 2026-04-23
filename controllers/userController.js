@@ -149,15 +149,35 @@ export const loginUser = async (req, res) => {
 }
 
 // Get All Users 
+// export const getAllUsers = async (req, res) => {
+//     try {
+//         const users = await User.find();
+//         res.json({ users });
+//     } catch (error) {
+//         console.log(error);
+//         res.status(500).json({ message: "Server Error" });
+//     }
+// }
+
+// Modified role based fetch users 
 export const getAllUsers = async (req, res) => {
     try {
-        const users = await User.find();
-        res.json({ users });
+        const { role } = req.query;
+
+        let filter = {};
+
+        if (role && role !== "all") {
+            filter.role = role; // assuming you store role in DB
+        }
+
+        const users = await User.find(filter).sort({ createdAt: -1 });
+
+        res.json({ success: true, users });
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: "Server Error" });
+        res.status(500).json({ message: "Failed to fetch users" });
     }
-}
+};
 
 // Verify Otp
 export const verifyOtp = async (req, res) => {
