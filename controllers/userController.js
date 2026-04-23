@@ -167,7 +167,7 @@ export const getAllUsers = async (req, res) => {
         let filter = {};
 
         if (role && role !== "all") {
-            filter.role = role; // assuming you store role in DB
+            filter.role = role;
         }
 
         const users = await User.find(filter).sort({ createdAt: -1 });
