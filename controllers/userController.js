@@ -198,6 +198,8 @@ export const verifyOtp = async (req, res) => {
             { expiresIn: "1d" }
         );
 
+        
+
         res.json({
             message: "Login successful",
             token,
