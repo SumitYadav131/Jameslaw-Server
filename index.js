@@ -1,7 +1,7 @@
 import express from "express";
 import connectDB from "./db.js";
 import cors from "cors";
-import { registerUser, checkUser, loginUser, verifyEmail, updateProfile, updateProfilepass, getProfileDetails, resetPassword, forgotPassword, verifyOtp, getAllUsers } from "./controllers/userController.js"
+import { registerUser, checkUser, loginUser, verifyEmail, updateProfile, updateProfilepass, getProfileDetails, resetPassword, forgotPassword, verifyOtp, getAllUsers , generateContent} from "./controllers/userController.js"
 import { authMiddleware } from "./controllers/middleware/middleware.js";
 import { registerSubscription, getSubscription, cancelSubscription } from "./controllers/subscriptionController.js"
 import { createCheckoutSession, createPaymentIntent } from "./controllers/paymentController.js";
@@ -105,6 +105,8 @@ app.get('/getticket/:id', getUserTicket);
 app.post('/sendticketmessage', authMiddleware, sendMessage);
 
 app.get('/conversation/:id', getConversation);
+
+app.post('/generateContent' , generateContent )
 
 const PORT = 3000;
 

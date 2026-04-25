@@ -4,6 +4,8 @@ import jwt from "jsonwebtoken";
 import PendingUser from "../models/PendingUser.js";
 import crypto from "crypto";
 import { sendEmail } from "../utils/sendEmail.js";
+import { GoogleGenAI } from "@google/genai";
+
 
 const clientUrl = process.env.CLIENT_url;
 
@@ -198,7 +200,7 @@ export const verifyOtp = async (req, res) => {
             { expiresIn: "1d" }
         );
 
-        
+
 
         res.json({
             message: "Login successful",
@@ -444,4 +446,23 @@ export const resetPassword = async (req, res) => {
         console.log(error);
         res.json({ message: "Error reseting password" });
     }
+}
+
+export const generateContent = async (req, res) => {
+    try {
+        const { prompt } = req.body;
+        const ai = new GoogleGenAI({ apiKey: "AIzaSyCFZbQzByRCDhx8RuvGfgAN9j2a3VKdDG4" });
+        const response = await ai.models.generateContent({
+            model: "gemini-3-flash-preview",
+            contents: prompt,
+        });
+        console.log(response.text);
+        res.json({
+            ststus: "true",
+            response: response.text
+        })
+    } catch (err) {
+        console.log(err);
+    }
+
 }
