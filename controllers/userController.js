@@ -8,6 +8,7 @@ import { GoogleGenAI } from "@google/genai";
 
 
 const clientUrl = process.env.CLIENT_url;
+const geminiKey = process.env.geminiKey;
 
 // Register User
 export const registerUser = async (req, res) => {
@@ -151,6 +152,7 @@ export const loginUser = async (req, res) => {
 }
 
 // Get All Users 
+
 // export const getAllUsers = async (req, res) => {
 //     try {
 //         const users = await User.find();
@@ -451,14 +453,14 @@ export const resetPassword = async (req, res) => {
 export const generateContent = async (req, res) => {
     try {
         const { prompt } = req.body;
-        const ai = new GoogleGenAI({ apiKey: "AIzaSyCFZbQzByRCDhx8RuvGfgAN9j2a3VKdDG4" });
+        const ai = new GoogleGenAI({ apiKey: geminiKey });
         const response = await ai.models.generateContent({
             model: "gemini-3-flash-preview",
             contents: prompt,
         });
         console.log(response.text);
         res.json({
-            ststus: "true",
+            status: "true",
             response: response.text
         })
     } catch (err) {
