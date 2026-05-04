@@ -74,7 +74,8 @@ export const createTicket = async (req, res) => {
 
 export const getTickets = async (req, res) => {
     try {
-        const tickets = await Ticket.find({ userId: req.user.id }).sort({ createdAt: -1 });
+        console.log({ userId: req.user.userId })
+        const tickets = await Ticket.find({ userId: req.user.userId }).sort({ createdAt: -1 });
         res.status(200).json({
             message: "Tickets Fetched Successfully",
             tickets
@@ -136,7 +137,6 @@ export const getUserTicket = async (req, res) => {
         })
     }
 }
-
 
 // Send ticket message
 export const sendMessage = async (req, res) => {

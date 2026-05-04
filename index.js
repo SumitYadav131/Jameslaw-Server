@@ -94,7 +94,7 @@ app.post('/resetpassword/:token', resetPassword);
 
 app.post("/createticket", authMiddleware, ticketUpload.single("attachment"), createTicket);
 
-app.get('/gettickets', getTickets);
+app.get('/gettickets', authMiddleware, getTickets);
 
 app.delete('/deleteticket/:id', deleteTicket);
 
