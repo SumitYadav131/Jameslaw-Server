@@ -14,6 +14,7 @@ export const uploadDocument = async (req, res) => {
             userId,
             fileName: docName || req.file.filename,
             filePath: req.file.path,
+            // To be updated after AWS Implementation
             // filePath: req.file.location,
             fileType: req.file.mimetype,
             fileSize: req.file.size,
