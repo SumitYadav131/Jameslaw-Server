@@ -96,6 +96,7 @@ export const deleteDocument = async (req, res) => {
 }
 
 // Get document details
+
 // export const getDocumentDetail = async (req, res) => {
 //     try {
 //         const { id } = req.params;
@@ -110,6 +111,8 @@ export const deleteDocument = async (req, res) => {
 //         })
 //     }
 // } 
+
+
 
 // Get document details
 export const getDocumentDetail = async (req, res) => {
