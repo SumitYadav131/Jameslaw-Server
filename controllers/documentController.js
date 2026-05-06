@@ -14,6 +14,7 @@ export const uploadDocument = async (req, res) => {
             userId,
             fileName: docName || req.file.filename,
             filePath: req.file.path,
+            // filePath: req.file.location,
             fileType: req.file.mimetype,
             fileSize: req.file.size,
             originalName: req.file.originalname,
