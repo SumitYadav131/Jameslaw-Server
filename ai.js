@@ -3,7 +3,7 @@ import * as fs from "node:fs";
 
 async function main() {
 
-  const ai = new GoogleGenAI({ apiKey: "AIzaSyCBE0gRkyZlF9T8KqSkLzCCitN1A2nCyrw"});
+  const ai = new GoogleGenAI({ apiKey: "AIzaSyCBE0gRkyZlF9T8KqSkLzCCitN1A2nCyrw" });
 
   const prompt =
     "Create a picture of a nano banana dish in a fancy restaurant with a Gemini theme";
