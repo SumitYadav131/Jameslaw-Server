@@ -4,7 +4,7 @@ import cors from "cors";
 import { registerUser, checkUser, loginUser, verifyEmail, updateProfile, updateProfilepass, getProfileDetails, resetPassword, forgotPassword, verifyOtp, getAllUsers, generateContent } from "./controllers/userController.js"
 import { authMiddleware } from "./controllers/middleware/middleware.js";
 import { registerSubscription, getSubscription, cancelSubscription } from "./controllers/subscriptionController.js"
-import { createCheckoutSession, createPaymentIntent } from "./controllers/paymentController.js";
+import { createCheckoutSession, createPaymentIntent, savePayment } from "./controllers/paymentController.js";
 import { registerBeneficiary, getBeneficiaries, deleteBeneficiary, updateBeneficiary } from "./controllers/beneficiaryController.js";
 import { uploadMiddleware } from "./controllers/middleware/middleware.js";
 import { ticketUpload } from "./controllers/middleware/ticketUpload.js";
@@ -62,9 +62,12 @@ app.get('/myprofiledetails', authMiddleware, getProfileDetails);
 
 app.put('/cancelplan', authMiddleware, cancelSubscription);
 
-app.post('/create-checkout-session', authMiddleware, createCheckoutSession);
+app.post('/create-checkout-session', createCheckoutSession);
 
-app.post('/createPaymentIntent', authMiddleware, createPaymentIntent);
+app.post('/create-payment-intent', authMiddleware, createPaymentIntent);
+
+app.post('/savepayment', authMiddleware, savePayment);
+
 
 app.post('/registerbeneficiary', authMiddleware, registerBeneficiary);
 

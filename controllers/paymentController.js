@@ -1,138 +1,148 @@
 import Stripe from "stripe";
 import Subscription from "../models/Subscription.js";
 import Payment from "../models/Payment.js";
+import User from "../models/User.js";
 
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-// Craete Payment Intent
+// Create Payment Intent
 export const createPaymentIntent = async (req, res) => {
-    const { planType, plan } = req.body;
-    const userId = req.user.userId;
-
-    const priceMap = {
-        basic: 78000,   // ₹780
-        premium: 99900,
-        pro: 190000,
-    };
-
     try {
+        const { name, email } = req.body;
+
         const paymentIntent = await stripe.paymentIntents.create({
-            amount: priceMap[plan],
-            currency: "inr",
+            amount: 17900, // $179
+            currency: "usd",
+
             metadata: {
-                userId,
-                plan,
-                planType,
+                userId: req.user.userId,
+                name,
+                email,
+
+                plan: "lifetime",
+                amount: "179",
+                currency: "usd",
+
+                platform: "web",
+                module: "subscription",
+
+                createdAt: new Date().toISOString(),
             },
         });
 
-        res.json({
+        res.status(200).json({
             clientSecret: paymentIntent.client_secret,
-
         });
 
     } catch (error) {
         console.log(error);
-        res.status(500).send(`Stripe Error: ${error.message}`);
+        res.status(500).json({ message: "Error creating payment intent" });
     }
 };
 
 
-
-// create checkout session
-export const createCheckoutSession = async (req, res) => {
-    const { planType, plan } = req.body;
-    const userId = req.user.userId;
-    const priceMap = {
-        basic: 780,
-        premium: 999,
-        pro: 1900,
-    };
+// Save payment
+export const savePayment = async (req, res) => {
     try {
-        const session = await stripe.checkout.sessions.create({
-            payment_method_types: ["card"],
-            mode: "payment",
-            line_items: [
-                {
-                    price_data: {
-                        currency: "inr",
-                        product_data: {
-                            name: plan,
-                        },
-                        unit_amount: priceMap[plan]
-                    },
-                    quantity: 1
-                }
-            ],
-            success_url: `${process.env.CLIENT_url}/success`,
-            cancel_url: `${process.env.CLIENT_url}`,
+        const userId = req.user.userId;
+        const { paymentIntentId, amount, email, name } = req.body;
 
-            metadata: {
-                userId,
-                plan,
-                planType,
-            }
+        // 1. Save payment
+        const payment = new Payment({
+            userId,
+            name,
+            email,
+            stripePaymentIntentId: paymentIntentId,
+            amount,
+            status: "success",
         });
-        res.json({ url: session.url });
+
+        await payment.save();
+
+        // 2. Upgrade user
+        await User.findByIdAndUpdate(userId, {
+            isPremium: true,
+        });
+
+        res.status(200).json({
+            message: "Payment saved & user upgraded",
+            payment,
+        });
+
     } catch (error) {
         console.log(error);
-        res.status(500).send(`Stripe Error: ${error.message}`);
+        res.status(500).json({ message: "Error saving payment" });
     }
+};
 
-}
-
-
-// webhook to handle stripe events
-// export const stripeWebhook = async (req, res) => {
-//     const sig = req.headersp["stripe-signature"];
-//     let event;
+// create checkout session [Recent work]
+// export const createCheckoutSession = async (req, res) => {
+//     const { planType, plan } = req.body;
+//     const userId = req.user.userId;
+//     const priceMap = {
+//         basic: 780,
+//         premium: 999,
+//         pro: 1900,
+//     };
 //     try {
-//         event: stripe.webhooks.constructEvent(
-//             req.body,
-//             sig,
-//             process.env.STRIPE_WEBHOOK_SECRET
-//         );
+//         const session = await stripe.checkout.sessions.create({
+//             payment_method_types: ["card"],
+//             mode: "payment",
+//             line_items: [
+//                 {
+//                     price_data: {
+//                         currency: "inr",
+//                         product_data: {
+//                             name: plan,
+//                         },
+//                         unit_amount: priceMap[plan]
+//                     },
+//                     quantity: 1
+//                 }
+//             ],
+//             success_url: `${process.env.CLIENT_url}/success`,
+//             cancel_url: `${process.env.CLIENT_url}`,
 
+//             metadata: {
+//                 userId,
+//                 plan,
+//                 planType,
+//             }
+//         });
+//         res.json({ url: session.url });
 //     } catch (error) {
-//         return res.status(400).send(`Webhook Error: ${error.message}`)
-//     }
-
-//     if (event.type === "checkout.session.completed") {
-//         const session = event.data.object;
-//         const userId = session.metadata.userId;
-//         const plan = session.metadata.plan;
-//         const planType = session.metadata.planType;
-//         const amount = session.amount_total;
-//         const currency = session.currency;
-//         const paymentId = session.payment_intent;
-
-//         try {
-//             // Save Payment
-//             await Payment.create({
-//                 userId,
-//                 transactionId: session.id,
-//                 amount: session.amount_total / 100,
-//                 currency: session.currency,
-//                 status: session.payment_status,
-//                 paymentDate: new Date(session.created * 1000),
-//             });
-
-//             // save subscription
-//             await Subscription.create({
-//                 userId,
-//                 planName: plan,
-//                 price: session.amount_total / 100,
-//                 status: "active",
-//                 startDate: new Date(),
-//                 endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-//             });
-
-//             res.json({ received: true });
-
-//         } catch (error) {
-//             console.log(error);
-//         }
+//         console.log(error);
+//         res.status(500).send(`Stripe Error: ${error.message}`);
 //     }
 
 // }
+
+
+
+export const createCheckoutSession = async (req, res) => {
+    try {
+        const session = await stripe.checkout.sessions.create({
+            payment_method_types: ["card"],
+            mode: "payment", // one-time payment
+
+            line_items: [
+                {
+                    price: "price_1TaqjN2WKIRwWW8qMYAIbu6K", // price_id here
+                    quantity: 1,
+                },
+            ],
+
+            success_url: "http://localhost:5173/success",
+            cancel_url: "http://localhost:5173/cancel",
+        });
+
+        res.json({ url: session.url });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Payment error" });
+    }
+};
+
+

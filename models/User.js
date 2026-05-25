@@ -28,7 +28,11 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         default: null
-    }
+    },
+    isPremium: {
+        type: String,
+        default: false,
+    },
 
 
 
