@@ -30,7 +30,7 @@ const userSchema = new mongoose.Schema({
         default: null
     },
     isPremium: {
-        type: String,
+        type: Boolean,
         default: false,
     },
 
