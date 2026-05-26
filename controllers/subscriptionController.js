@@ -3,49 +3,35 @@ import User from "../models/User.js";
 import axios from "axios";
 
 // Register Subscription
-export const registerSubscription = async (req, res) => {
-    const {
-        planName,
-        planType,
-        price,
-        status,
-        startDate,
-        endDate,
-        paymentId
-    } = req.body;
-
-    const userId = req.user.userId;
-
-
-    if (!userId || !planName || !planType || !price) {
-        return res.status(400).json({
-            message: "Required fields missing"
-        });
-    }
-
+export const createSubscription = async (req, res) => {
     try {
-        const newSub = await Subscription.create({
+        const userId = req.user.userId;
+
+        const { paymentIntentId, amount, planName, planType } = req.body;
+
+        const subscription = await Subscription.create({
             userId,
             planName,
             planType,
-            price,
-            status: status || "active",
-            startDate: startDate || new Date(),
-            endDate,
-            paymentId
+            price: amount / 100,
+            status: "active",
+            startDate: new Date(),
+            endDate: planType === "lifetime" ? null : null, // later you can handle monthly/yearly
+            paymentId: paymentIntentId,
         });
 
-        res.status(201).json({
-            message: "Subscribed to plan " + planName,
-            data: newSub
+        await User.findByIdAndUpdate(userId, {
+            isPremium: true,
+        });
+
+        res.status(200).json({
+            message: "Subscription created",
+            subscription,
         });
 
     } catch (error) {
         console.log(error);
-        res.status(500).json({
-            message: "Server Error",
-            error: error.message
-        });
+        res.status(500).json({ message: "Error creating subscription" });
     }
 };
 
