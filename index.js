@@ -28,6 +28,7 @@ app.use('/uploads', express.static('uploads', {
         res.setHeader('Content-Disposition', 'inline');
     }
 }));
+
 app.get('/', (req, res) => {
     res.send('server is running');
 })
@@ -67,7 +68,6 @@ app.post('/create-payment-intent', authMiddleware, createPaymentIntent);
 app.post('/savepayment', authMiddleware, savePayment);
 
 app.post('/createsubscription', authMiddleware, createSubscription);
-
 
 app.post('/registerbeneficiary', authMiddleware, registerBeneficiary);
 
