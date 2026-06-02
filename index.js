@@ -11,7 +11,7 @@ import { ticketUpload } from "./controllers/middleware/ticketUpload.js";
 import { uploadDocument, getDocuments, deleteDocument, getDocumentDetail, assignBeneficiaries } from "./controllers/documentController.js";
 import { upload } from "./controllers/middleware/upload.js";
 import { deleteUser, registerUserByAdmin, } from "./controllers/adminController.js";
-import { createTicket, getTickets, deleteTicket, updateTicketStatus, getUserTicket, sendMessage, getConversation } from "./controllers/ticketController.js";
+import { createTicket, getAllTickets, getTickets, deleteTicket, updateTicketStatus, getUserTicket, sendMessage, getConversation } from "./controllers/ticketController.js";
 
 const app = express();
 
@@ -98,6 +98,8 @@ app.post('/resetpassword/:token', resetPassword);
 app.post("/createticket", authMiddleware, ticketUpload.single("attachment"), createTicket);
 
 app.get('/gettickets', authMiddleware, getTickets);
+
+app.get('/getalltickets', authMiddleware, getAllTickets);
 
 app.delete('/deleteticket/:id', deleteTicket);
 

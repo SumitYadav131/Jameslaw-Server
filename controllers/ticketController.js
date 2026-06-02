@@ -187,3 +187,17 @@ export const getConversation = async (req, res) => {
         res.status(500).json({ message: "Failed to fetch conversation" });
     }
 };
+
+// Get all tickets for admin
+export const getAllTickets = async (req, res) => {
+    try {
+        const tickets = await Ticket.find().sort({ createdAt: -1 }).populate("userId", "name email");
+        res.status(200).json({
+            message: "All Tickets Fetched Successfully",
+            tickets
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Error fetching all tickets", error });
+    }
+}
