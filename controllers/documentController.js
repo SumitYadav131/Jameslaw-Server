@@ -87,7 +87,7 @@ export const deleteDocument = async (req, res) => {
 
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: "Delete failed" });
+        res.status(500).json({ message: error.message || "Failed to delete document" });
     }
 };
 
